@@ -18,7 +18,6 @@ MyState::MyState(QString name, ros::Publisher *pub_ptr)
 
 void MyState::onEntry(QEvent *)
 {
-
     std_msgs::String msg;
     msg.data = objectName().toStdString();
     _pub_ptr->publish(msg);
