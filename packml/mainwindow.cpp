@@ -9,13 +9,10 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-
     //Ros:
     _lightstate_pub = _node_handle.advertise<std_msgs::String>("lightstate",100);
 
     initStateMachine();
-
-
 }
 
 MainWindow::~MainWindow()
