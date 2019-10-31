@@ -15,11 +15,11 @@
 using namespace ur_rtde;
 using namespace std;
 
-#define UR_IP "127.0.0.1"
+#define UR_IP "192.168.100.54"
 
-#define RED_OUTPUT_PIN 0
+#define RED_OUTPUT_PIN 2
 #define YELLOW_OUTPUT_PIN 1
-#define GREEN_OUTPUT_PIN 2
+#define GREEN_OUTPUT_PIN 0
 
 
 //Global variables:
@@ -50,8 +50,6 @@ int main(int argc, char* argv[])
 {
 
     rtde_io_ptr = new RTDEIOInterface(UR_IP);
-    rtde_io_ptr->setStandardDigitalOut(RED_OUTPUT_PIN, true);
-
 
     ros::init(argc, argv,"light_tower");
 
@@ -140,7 +138,7 @@ void stateMachine()
 
     else if(state =="suspending")
     {
-        setDigitalOutputs(rtde_io_ptr, false, true, true);
+        setDigitalOutputs(rtde_io_ptr, false, true, false);
         cout << "stateMachine(): suspending" << endl;
     }
 
