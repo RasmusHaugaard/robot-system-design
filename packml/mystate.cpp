@@ -16,11 +16,18 @@ MyState::MyState(QString name, ros::Publisher *pub_ptr)
     _pub_ptr = pub_ptr;
 }
 
+MyState::MyState(QString name, ros::Publisher *pub_ptr, QState *parent)
+{
+    this->setObjectName(name);
+    _pub_ptr = pub_ptr;
+    this->setParent(parent);
+}
 void MyState::onEntry(QEvent *)
 {
     std_msgs::String msg;
     msg.data = objectName().toStdString();
     _pub_ptr->publish(msg);
     ROS_INFO("Sent message: %s", msg.data.c_str());
+
 
 }

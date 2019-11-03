@@ -13,6 +13,8 @@ public:
     MyState();
     MyState(QString name);
     MyState(QString name, ros::Publisher* pub_ptr);
+    MyState(QString name, ros::Publisher* pub_ptr, QState* parent);
+
 
 protected:
     void onEntry(QEvent * ) override;

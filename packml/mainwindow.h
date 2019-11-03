@@ -27,7 +27,13 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
-private slots:
+public slots:
+    void receivedCommandSlot(QString command); //If another process wants to update something on the gui, it should emit the signal 'commandSignal(cmd)'
+
+signals:
+    void abortCommandReceivedSignal();
+    void stopCommandReceivedSignal();
+
 
 private:
     Ui::MainWindow *ui;
@@ -65,6 +71,9 @@ private:
     //QList<QState*> _waiting_states; //A waiting state is a yellow one.
 
     QList<QString> _state_names;
+
+    QState* _top_box_state;
+    QState* _lower_box_state;
 
     void initStateMachine();
 
