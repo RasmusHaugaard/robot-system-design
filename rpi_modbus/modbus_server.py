@@ -107,8 +107,20 @@ def calculateSizeAndColor():
     print('Finished taking a picture. Identifying bricks...')
     bgr = cv2.imread("lego_image.jpg")
     #bgr = cv2.imread("lego_test.jpg")
+    bgr = bgr[(768//2)-80:(768//2)+80, (1024//2)-80:(1024//2)+80]
+    cv2.imwrite('lego_cropped.jpg', bgr)
+    #bgr = bgr.crop((1024//2 - 50//2, 768//2 - 50//2, 1024//2 + 50//2, 768//2 + 50//2))
+    kernel = np.ones((85,85),np.float32)/(85*85)
+    bgr = cv2.filter2D(bgr,-1,kernel)
+    #bgr = cv2.GaussianBlur(bgr,(89,89),cv2.BORDER_DEFAULT)
 
-    bgr = cv2.resize(bgr, (bgr.shape[1] // 2, bgr.shape[0] // 2))
+    cv2.imwrite('lego_cropped_blurred.jpg', bgr)
+    bgr = cv2.copyMakeBorder(bgr, 30, 30, 30, 30, cv2.BORDER_CONSTANT, value=(0,0,0))
+    cv2.imwrite('lego_cropped_padding.jpg', bgr)
+
+
+
+    #bgr = cv2.resize(bgr, (bgr.shape[1] // 2, bgr.shape[0] // 2))
     # convert to floating point hsv in the range [0, 1)
     hsv = cv2.cvtColor(bgr, cv2.COLOR_BGR2HSV).astype(np.float) / (180, 256, 256)
 
@@ -139,7 +151,7 @@ def calculateSizeAndColor():
         #print('Centroids: ', centroids)
         for label in range(1, num_labels):
             area = stats[label, cv2.CC_STAT_AREA]
-            if area > 100:  # change area threshold as needed
+            if area > 1000:  # change area threshold as needed
                 c = centroids[label]
                 point_set = np.argwhere(labels == label)
                 rect = cv2.minAreaRect(point_set)
@@ -219,7 +231,7 @@ class CallbackDataBlock(ModbusSparseDataBlock):
 # initialize your device map
 # ---------------------------------------------------------------------------#
 camera = PiCamera()
-camera.resolution = (3280, 2464)
+camera.resolution = (1024, 768)
 camera.start_preview()
 # Camera warm-up time
 print('Camera is warming up. Taking pictures with a resolution of ',camera.resolution,'.')
