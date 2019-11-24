@@ -17,10 +17,10 @@ def main():
 
     # calc stats
     for color in v.colors:
-        folder = Path("{}_bricks".format(color))
+        folder = Path()
 
         c_images = []
-        for img_path in map(str, folder.glob("*.jpg")):
+        for img_path in map(str, folder.glob("{}_bricks*/*.jpg".format(color))):
             img = cv2.imread(img_path, cv2.IMREAD_COLOR)
             img = v.brick_crop(img)
             c_images.append(img.astype(np.float) / 255)
@@ -31,7 +31,7 @@ def main():
 
         pixels = v.sample(c_images.reshape(-1, 3), 1000)  # sample 1000 pixels for performance reasons
         px_mu.append(np.mean(pixels, axis=0))
-        px_cov.append(np.cov(pixels.T))
+        px_cov.append(np.cov(pixels.T) + np.diag(np.ones(3) * 1e-3))
 
     fig, ax = v.bgr_plot(plt, "randomly sampled pixels from images")
     for color, c_images, c_img_mu in zip(v.colors, images, img_mu):
