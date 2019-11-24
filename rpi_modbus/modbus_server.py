@@ -170,11 +170,11 @@ def calculateSizeAndColor():
                 cv2.imwrite('lego_output.jpg', bgr)
                 # Assuming only one connected component is detected... Otherwise will have multiple connected components and all but 1 are ignored.
                 if c_name=='yellow':
-                    return 10+L
+                    return 1
                 elif c_name=='red':
-                    return 20+L
+                    return 2
                 elif c_name=='blue':
-                    return 30+L
+                    return 3
     return 0
     #plt.imshow(bgr[..., ::-1])
     #plt.show()
