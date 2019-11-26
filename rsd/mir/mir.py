@@ -21,7 +21,7 @@ class Mir():
         rest.add_to_mission_queue(guid)
 
         while(self.get_state() != STATE_AT_WORKCELL ):
-            print("State is: %d", self.get_state() )
+            print("State is:", self.get_state())
             time.sleep(1)
 
     def release_from_workcell(self):
