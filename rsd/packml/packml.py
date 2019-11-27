@@ -1,10 +1,6 @@
-import numpy as np
-
-
-def enum_text_array(STATE):
-    state_names = [name for name in dir(STATE) if not name.startswith("__")]
-    state_ids = [getattr(STATE, name) for name in state_names]
-    return np.array(state_names)[np.argsort(state_ids)]
+STATES = ("UNHOLDING", "HELD", "HOLDING", "IDLE", "STARTING", "EXECUTE", "COMPLETING", "COMPLETE", "RESETTING",
+          "UNSUSPENDING", "SUSPENDED", "SUSPENDING", "STOPPED", "STOPPING", "CLEARING", "ABORTED", "ABORTING")
+ACTIONS = ("RESET", "START", "HOLD", "UNHOLD", "SUSPEND", "UNSUSPEND", "STOP", "ABORT", "CLEAR")
 
 
 class PackMLState:
@@ -88,9 +84,6 @@ AVAILABLE_ACTIONS = {
     S.ABORTING: tuple(),
 }
 
-state_names = enum_text_array(PackMLState)
-action_names = enum_text_array(PackMLActions)
-
 
 class PackML:
     state = S.STOPPED
@@ -125,7 +118,7 @@ class PackML:
             self.state = ACTION_TRANSITION_STATE[action_id]
         else:
             print("ACTION {} NOT AVAILABLE in STATE {}".format(
-                action_names[action_id], state_names[self.state])
+                ACTIONS[action_id], STATES[self.state])
             )
         self.run()
 
@@ -135,7 +128,7 @@ def main():
     from collections import defaultdict
 
     def default_state_fun(pml):
-        print("STATE: ", state_names[pml.state])
+        print("STATE: ", STATES[pml.state])
         time.sleep(1)
 
     def execute(pml):
