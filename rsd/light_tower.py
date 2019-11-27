@@ -33,7 +33,6 @@ class LightTower:
 
     def __init__(self, debug=False):
         super().__init__()
-        self.ur_io = ur_io
         self.should_stop = False
         self.debug = debug
         self.r = RsdRedis()
@@ -42,6 +41,7 @@ class LightTower:
 
     def set_state(self, state):
         self.state = state
+        print("STATE:", STATES[state])
 
     def start(self, blocking=True):
         assert self.t is None
@@ -72,7 +72,7 @@ class LightTower:
             print(STATES[state], "ODD" if self.odd else "EVEN", lights_on)
         else:
             for output_id, light_on in enumerate(lights_on):
-                self.r.publish("setStandardDigitalOutput", (output_id, light_on))
+                self.r.publish("setStandardDigitalOut", (output_id, light_on))
 
     def stop(self):
         self.should_stop = True
@@ -83,16 +83,25 @@ class LightTower:
 
 
 def main():
-    lt = LightTower(ur_io=None, debug=True)
+    lt = LightTower()
+    lt.start()
+
+
+def _test():
+    lt = LightTower(debug=True)
     lt.start(blocking=False)
 
     r = RsdRedis()
-    for state in S.RESETTING, S.EXECUTE, S.HOLDING:
-        time.sleep(1)
+    for state in light_config.keys():
+        time.sleep(3)
         r.publish("state", state)
 
     lt.stop()
 
 
 if __name__ == '__main__':
-    main()
+    TEST = False
+    if TEST:
+        _test()
+    else:
+        main()
