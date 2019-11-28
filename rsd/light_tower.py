@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 import time
 import threading
 from rsd.packml.packml import PackMLState as S, STATES
@@ -36,7 +38,9 @@ class LightTower:
         self.should_stop = False
         self.debug = debug
         self.r = RsdRedis()
-        self.state = S.STOPPED
+        self.state = self.r.get("state")
+        if self.state is None:
+            self.state = S.ABORTED
         self.t = None
 
     def set_state(self, state):

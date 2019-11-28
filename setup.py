@@ -9,5 +9,8 @@ setup(
         'requests',
         'pymodbus',
         'matplotlib',
+        'redis',
+        'PySide2',
+        'PyQt5',
     ]
 )

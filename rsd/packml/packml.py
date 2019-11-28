@@ -86,36 +86,50 @@ AVAILABLE_ACTIONS = {
 
 
 class PackML:
-    state = S.STOPPED
-    DEBUG = False
+    state = S.ABORTED
 
-    def __init__(self, state_functions: dict = None):
+    def __init__(self, state_functions: dict = None, cb_state_change=None, debug=False):
+        self.debug = debug
         self.state_functions = state_functions if state_functions is not None else {}
+        self.cb_state_change = cb_state_change
         self.run()
+
+    def set_state(self, new_state):
+        if new_state != self.state:
+            old_state = self.state
+            self.state = new_state
+            if self.cb_state_change:
+                self.cb_state_change(old_state, new_state)
 
     def run(self):
         while True:
+            if self.debug:
+                print("State:", STATES[self.state])
+
             try:
                 state_function = self.state_functions[self.state]
             except KeyError:
-                state_function = lambda x: None
-            res = state_function(self)
-            if res is False or res is None:
-                new_state = self.state
-            elif res is True:
+                state_function = lambda: None
+            res = state_function()
+
+            if res is False:
+                new_state = None
+            elif res is True or res is None:
                 new_state = STATE_COMPLETE_TRANSITION.get(self.state, None)
             elif type(res) == int:
                 new_state = res
             else:
                 raise ValueError
 
-            if new_state == self.state:
+            if new_state is None:
                 break
-            self.state = new_state
+            self.set_state(new_state)
 
     def __call__(self, action_id):
+        if self.debug:
+            print("Action:", ACTIONS[action_id])
         if action_id in AVAILABLE_ACTIONS[self.state]:
-            self.state = ACTION_TRANSITION_STATE[action_id]
+            self.set_state(ACTION_TRANSITION_STATE[action_id])
         else:
             print("ACTION {} NOT AVAILABLE in STATE {}".format(
                 ACTIONS[action_id], STATES[self.state])
@@ -125,27 +139,19 @@ class PackML:
 
 def main():
     import time
-    from collections import defaultdict
 
-    def default_state_fun(pml):
-        print("STATE: ", STATES[pml.state])
-        time.sleep(1)
-
-    def execute(pml):
+    def execute():
         print("EXECUTING:: !!")
-        time.sleep(5)
+        time.sleep(3)
 
-    state_functions = defaultdict(
-        lambda: default_state_fun,
-        {
-            S.EXECUTE: execute,
-        }
-    )
+    def cb_state_changed(old_state, new_state):
+        print("Old state: {:10} New state: {:10}".format(STATES[old_state], STATES[new_state]))
 
-    pml = PackML(state_functions)
-    print("ACTION RESET")
+    pml = PackML({
+        S.EXECUTE: execute
+    }, cb_state_change=cb_state_changed)
+    pml(A.CLEAR)
     pml(A.RESET)
-    print("ACTION START")
     pml(A.START)
 
 
