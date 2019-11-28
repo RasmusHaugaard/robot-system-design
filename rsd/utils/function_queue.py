@@ -7,9 +7,16 @@ class FunctionQueue:
 
     def __call__(self, fun, args=(), spread=None):
         if spread is None:
-            spread = iter(args)
+            try:
+                iter(args)
+                spread = True
+            except TypeError:
+                spread = False
         self.lock.acquire()
-        res = fun(*args if spread else args)
+        if spread:
+            res = fun(*args)
+        else:
+            res = fun(args)
         self.lock.release()
         return res
 

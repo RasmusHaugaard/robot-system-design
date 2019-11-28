@@ -43,13 +43,14 @@ class LightTower:
             self.state = S.ABORTED
         self.t = None
 
-    def set_state(self, state):
-        self.state = state
-        print("STATE:", STATES[state])
+    def set_state(self, data):
+        old_state, new_state = data
+        self.state = new_state
+        print("STATE:", STATES[new_state])
 
     def start(self, blocking=True):
         assert self.t is None
-        sub = self.r.subscribe("state", self.set_state)
+        sub = self.r.subscribe("state_changed", self.set_state)
 
         def loop():
             while not self.should_stop:
@@ -98,7 +99,7 @@ def _test():
     r = RsdRedis()
     for state in light_config.keys():
         time.sleep(3)
-        r.publish("state", state)
+        r.publish("state_changed", (None, state))
 
     lt.stop()
 

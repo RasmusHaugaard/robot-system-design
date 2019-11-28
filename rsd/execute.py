@@ -7,6 +7,7 @@ from rsd.mes import Mes
 from rsd.robot import q
 from rsd.vision.vision_client import VisionClient
 from rsd.robot.path import find_nearest, find_path
+from rsd.packml.packml import PackMLActions as A
 
 redis = RsdRedis()
 robot = Robot(redis)
@@ -55,6 +56,7 @@ while True:
             q_grasp_brick, q_above_brick = q.GRASP_BRICKS[brick_color_id], q.ABOVE_BRICKS[brick_color_id]
 
             count = order[brick_color]
+            failed = 0
             while count > 0:
                 robot.move(
                     q.IDLE,
@@ -67,8 +69,13 @@ while True:
                 if vis.get_color_id() == brick_color_id:
                     robot.move(q_drop_order_box)
                     count -= 1
+                    failed = 0
                 else:
                     robot.move(q.BRICK_DROP_DISCARD_BOX)
+                    failed += 1
+                    if failed >= 3:
+                        redis.publish("action", A.HOLD)
+                        failed = 0
                 robot.release()
 
         mes.complete_order(order, ticket)

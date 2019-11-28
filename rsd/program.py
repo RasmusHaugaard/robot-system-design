@@ -2,7 +2,7 @@
 from subprocess import Popen
 
 from rsd.utils.rsd_redis import RsdRedis
-from rsd.packml.packml import PackML, PackMLState as S, PackMLActions as A
+from rsd.packml.packml import PackML, PackMLState as S, PackMLActions as A, ACTIONS
 
 
 class Program:
@@ -29,7 +29,7 @@ class Program:
         self.ligt_tower_process = Popen(["python3", "light_tower.py"])
         self.robot_process = None  # type: Popen
         self.r.subscribe("action", self.on_action_req)
-        self.gui_process = Popen(["python3", "gui/gui.py"])
+        self.gui_process = Popen(["python3", "gui.py"], cwd="gui")
         # TODO: start gui process
         # TODO: start mes state logger
         self.r.join()
@@ -41,6 +41,8 @@ class Program:
                 a = A.UNHOLD
             if s is S.SUSPENDED:
                 a = A.UNSUSPEND
+            if s is S.ABORTED:
+                a = A.CLEAR
         self.pml(a)
 
     def on_state_change(self, old_state, new_state):
@@ -52,8 +54,9 @@ class Program:
         pass
 
     def starting(self):
+        self.stopping()
         self.speed_one()
-        self.robot_process = Popen(["python3", "execute.py"])
+        self.robot_process = Popen(["python3", "execute.py"], shell=False)
 
     def stopping(self):
         self.speed_zero()
