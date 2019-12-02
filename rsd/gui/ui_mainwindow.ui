@@ -106,7 +106,7 @@ border: 1px solid;
          <string/>
         </property>
         <property name="pixmap">
-         <pixmap resource="../../../Downloads/resources.qrc">:/image/logo.jpg</pixmap>
+         <pixmap>:/image/logo.jpg</pixmap>
         </property>
         <property name="alignment">
          <set>Qt::AlignHCenter|Qt::AlignTop</set>
@@ -567,7 +567,34 @@ border: 1px solid;
               </font>
              </property>
              <property name="text">
-              <string>0.3</string>
+              <string>1.00</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_16">
+           <property name="leftMargin">
+            <number>10</number>
+           </property>
+           <property name="rightMargin">
+            <number>10</number>
+           </property>
+           <item>
+            <widget class="QLabel" name="label_12">
+             <property name="text">
+              <string>OEE</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="OEELabel">
+             <property name="text">
+              <string>0.75</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -603,7 +630,7 @@ border: 1px solid;
             </widget>
            </item>
            <item>
-            <widget class="QLabel" name="label">
+            <widget class="QLabel" name="uptimeLabel">
              <property name="font">
               <font>
                <pointsize>-1</pointsize>
@@ -613,7 +640,7 @@ border: 1px solid;
               </font>
              </property>
              <property name="text">
-              <string>02:34:13</string>
+              <string>00:00:00</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -621,6 +648,9 @@ border: 1px solid;
             </widget>
            </item>
           </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_13"/>
          </item>
          <item>
           <spacer name="verticalSpacer_3">
@@ -1108,8 +1138,6 @@ background-color: #FF0000;
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
- <resources>
-  <include location="../../../Downloads/resources.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>
