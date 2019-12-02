@@ -23,7 +23,7 @@ class MainWindow(QtWidgets.QMainWindow, QObject):
         self.r = RsdRedis()
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
-        self.ui.packmlStateLabel.setText("Hey what's up!?")
+        self.ui.packmlStateLabel.setText("ABORTED")
         image_profile = QtGui.QImage('tower_states/101.png')
         image_profile = image_profile.scaled(183, 281, aspectRatioMode=QtCore.Qt.KeepAspectRatio,
                                              transformMode=QtCore.Qt.SmoothTransformation)
