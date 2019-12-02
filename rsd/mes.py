@@ -20,6 +20,7 @@ class Mes:
 
     def complete_order(self, order, ticket):
         res = requests.delete("{}/orders/{}/{}".format(self.server_url, order['id'], ticket))
+        _ = res.content  # to close conn
         assert res.status_code == 204  # no content
 
     def take_a_ready_order(self):

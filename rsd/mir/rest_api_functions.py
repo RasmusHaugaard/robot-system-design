@@ -1,35 +1,42 @@
 import requests
 import json
 import time
+from rsd import conf
+
+BASE_URL = conf.MIR_SERVER_URL + "/api/v2.0.0"
 
 token = "Basic UlNEMjAxOTo0NWVkZWQ4YmRjMjJmZGQ5ZjcwOTJmY2RhMDhkOWFmMjdjNDNhNjQ4MWFkZDYyMDgwZWI3MmM0OTcyOTQ1NzZl"
 
-def get_mission_guid(mission_name):         
-    url = 'http://mir.com/api/v2.0.0/missions'
-    r = requests.get(url, headers={'Authorization': token}) #stackoverflow: Python request how to pass auth header
-    if(r.status_code == 200):   
+
+def get_mission_guid(mission_name):
+    url = BASE_URL + '/missions'
+    r = requests.get(url, headers={'Authorization': token})  # stackoverflow: Python request how to pass auth header
+    if r.status_code == 200:
         r_json = r.json()
         for elem in r_json:
-            if(elem['name'] == mission_name):
-                print("Found mission: " + mission_name + " - guid: " + elem['guid'] )
+            if (elem['name'] == mission_name):
+                print("Found mission: " + mission_name + " - guid: " + elem['guid'])
                 guid = elem['guid']
-                return guid 
+                return guid
     else:
         print("Could not find mission: " + mission_name)
         print(r.status_code)
         print(r.content)
 
+
 """Returns an integer (id)"""
+
+
 def add_to_mission_queue(guid):
-    url = "http://mir.com/api/v2.0.0/mission_queue"
+    url = BASE_URL + "/mission_queue"
 
     body = {"mission_id": guid}
 
-    r = requests.post(url, headers={'Authorization': token, 'content-type':'application/json'},
-                     data=json.dumps(body)) 
-    if r.status_code == 201: #201 - The element has been created successfully
+    r = requests.post(url, headers={'Authorization': token, 'content-type': 'application/json'},
+                      data=json.dumps(body))
+    if r.status_code == 201:  # 201 - The element has been created successfully
         r_json = r.json()
-        print("Posted to mission queue:  " + "-- guid: " +  guid + " -- id: " + str(r_json['id']))
+        print("Posted to mission queue:  " + "-- guid: " + guid + " -- id: " + str(r_json['id']))
         return r_json['id']
     else:
         print("Could not post to mission queue")
@@ -39,12 +46,14 @@ def add_to_mission_queue(guid):
 
 """Input: the id, which was created when 
    the mission was posted to the queue"""
+
+
 def remove_mission(id):
-    url = "http://mir.com/api/v2.0.0/mission_queue/" + str(id)
+    url = BASE_URL + "/mission_queue/" + str(id)
 
-    r = requests.delete(url, headers={'Authorization' : token})
+    r = requests.delete(url, headers={'Authorization': token})
 
-    if(r.status_code == 204): #The element has been successfully deleted
+    if r.status_code == 204:  # The element has been successfully deleted
         print("Succesfully removed: " + str(id) + "from mission queue")
     else:
         print("Could not remove mission from queue")
@@ -52,12 +61,11 @@ def remove_mission(id):
         print(r.content)
 
 
-
 def get_register_value(register_id):
-    url = "http://mir.com/api/v2.0.0/registers"
-    r = requests.get(url, headers={'Authorization' : token})
+    url = BASE_URL + "/registers"
+    r = requests.get(url, headers={'Authorization': token})
 
-    if(r.status_code == 200):
+    if r.status_code == 200:
         r_json = r.json()
         for elem in r_json:
             if elem['id'] == register_id:
@@ -68,12 +76,13 @@ def get_register_value(register_id):
         print(r.status_code)
         print(r.content)
 
-def set_register_value(register_id, value):
-    url = "http://mir.com/api/v2.0.0/registers/" + str(register_id)
-    body = {"value" : value, "label" : ""}
-    r = requests.put(url, headers={'Authorization' : token, 'content-type':'application/json'}, data = json.dumps(body))
 
-    if(r.status_code == 200):
+def set_register_value(register_id, value):
+    url = BASE_URL + "/registers/" + str(register_id)
+    body = {"value": value, "label": ""}
+    r = requests.put(url, headers={'Authorization': token, 'content-type': 'application/json'}, data=json.dumps(body))
+
+    if r.status_code == 200:
         print("Set register " + str(register_id) + ": " + str(value))
     else:
         print(r.status_code)
@@ -81,12 +90,12 @@ def set_register_value(register_id, value):
 
 
 def get_status():
-    url = "http://mir.com/api/v2.0.0/status"
-    r = requests.get(url, headers={'Authorization' : token})
+    url = BASE_URL + "/status"
+    r = requests.get(url, headers={'Authorization': token})
 
-    if(r.status_code == 200):
+    if r.status_code == 200:
         r_json = r.json()
-        #print(r_json)
+        # print(r_json)
         return r_json
     else:
         print("Could not get status")
@@ -106,7 +115,3 @@ def get_status():
 #     print("mode: " + str( r_json['mode_id'] ))
 #     print("state_text: " +  r_json['state_text'])
 #     get_register_value(9)
-
-
-
-
