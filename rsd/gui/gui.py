@@ -14,6 +14,9 @@ from rsd.gui.ui_mainwindow import Ui_MainWindow
 from rsd.utils.rsd_redis import RsdRedis
 from rsd.packml.packml import STATES, PackMLActions as A
 
+state_images = (["tower_states/001.png",1], ["tower_states/011.png",0], ["tower_states/011.png",0], ["tower_states/001.png",0], ["tower_states/001.png",1], ["tower_states/001.png",1], ["tower_states/000.png",1], ["tower_states/000.png",1], ["tower_states/010.png",0],
+          ["tower_states/001.png",1], ["tower_states/010.png",1], ["tower_states/010.png",1], ["tower_states/100.png",1], ["tower_states/100.png",1], ["tower_states/100.png",0], ["tower_states/100.png",0], ["tower_states/100.png",0])
+
 
 class MainWindow(QtWidgets.QMainWindow, QObject):
     state_change = Signal(tuple)
@@ -55,7 +58,7 @@ class MainWindow(QtWidgets.QMainWindow, QObject):
 
     @Slot(tuple)
     def on_state_change(self, data):
-        old_state, new_state = data
+        old_state, self.new_state = data
         self.ui.packmlStateLabel.setText(STATES[new_state])
 
     @Slot()
@@ -77,6 +80,11 @@ class MainWindow(QtWidgets.QMainWindow, QObject):
         self.ui.uptimeLabel.setText(uptime_string)
 
         self.update_OEE()
+
+        state_image = QtGui.QImage(state_images[self.new_state][0])
+        state_image = state_image.scaled(183, 281, aspectRatioMode=QtCore.Qt.KeepAspectRatio,
+                                             transformMode=QtCore.Qt.SmoothTransformation)
+        self.ui.lightTowerStatus.setPixmap(QtGui.QPixmap.fromImage(state_image))
 
     def update_OEE(self):
         #Availability:
