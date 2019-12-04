@@ -59,7 +59,7 @@ def remove_mission(id):
         print(r.content)
 
 
-def get_register_value(register_id):
+def get_register_value(register_id, debug=False):
     url = BASE_URL + "/registers"
     r = requests.get(url, headers={'Authorization': token})
 
@@ -68,7 +68,8 @@ def get_register_value(register_id):
         for elem in r_json:
             if elem['id'] == register_id:
                 value = elem['value']
-        print("Register " + str(register_id) + ": " + str(value))
+        if debug:
+            print("Register " + str(register_id) + ": " + str(value))
         return value
     else:
         print(r.status_code)
@@ -99,8 +100,6 @@ def get_status():
         print("Could not get status")
 
 
-
-
 def get_mission_queue():
     url = BASE_URL + "/mission_queue"
     r = requests.get(url, headers={'Authorization': token})
@@ -112,7 +111,6 @@ def get_mission_queue():
         print(r.status_code)
         print(r.content)
 
-"""Uses the id"""
 def get_mission_info_by_id(id):
     url = BASE_URL + "/mission_queue/" + str(id)
     r = requests.get(url, headers={'Authorization': token})

@@ -2,10 +2,11 @@
 
 import rsd.mir.rest_api_functions as rest
 import time
-
 STATE_MOVING_TO_WORKCELL = 1
 STATE_AT_WORKCELL = 2
 STATE_MISSION_COMPLETE = 3
+mir_states = {STATE_MOVING_TO_WORKCELL: 'MOVING_TO_WORKCELL', STATE_AT_WORKCELL: 'AT_WORKCELL', STATE_MISSION_COMPLETE: 'MISSION_COMPLETE'}
+
 
 
 class Mir:
@@ -24,7 +25,7 @@ class Mir:
         rest.add_to_mission_queue(self.guid)
 
         while self.get_state() != STATE_AT_WORKCELL:
-            print("State is:", self.get_state())
+            print("MIR state is:", mir_states[self.get_state()])
             time.sleep(1)
 
     def release_from_workcell(self):
