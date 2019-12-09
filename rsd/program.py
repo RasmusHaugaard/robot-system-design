@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 from subprocess import Popen
+import atexit
 
 from rsd.utils.rsd_redis import RsdRedis
 from rsd.packml.packml import PackML, PackMLState as S, PackMLActions as A, ACTIONS
@@ -30,9 +31,17 @@ class Program:
         self.robot_process = None  # type: Popen
         self.r.subscribe("action", self.on_action_req)
         self.gui_process = Popen(["python3", "gui.py"], cwd="gui")
-        # TODO: start gui process
         # TODO: start mes state logger
+        atexit.register(self.cleanup)
         self.r.join()
+
+    def cleanup(self):
+        for p in self.gui_process, self.p_ur_comm, self.ligt_tower_process, self.robot_process:
+            if p is not None:
+                try:
+                    p.kill()
+                finally:
+                    pass
 
     def on_action_req(self, a):
         s = self.pml.state
