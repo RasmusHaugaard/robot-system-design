@@ -2,10 +2,11 @@
 
 import rsd.mir.rest_api_functions as rest
 import time
-
 STATE_MOVING_TO_WORKCELL = 1
 STATE_AT_WORKCELL = 2
 STATE_MISSION_COMPLETE = 3
+mir_states = {STATE_MOVING_TO_WORKCELL: 'MOVING_TO_WORKCELL', STATE_AT_WORKCELL: 'AT_WORKCELL', STATE_MISSION_COMPLETE: 'MISSION_COMPLETE'}
+
 
 
 class Mir:
@@ -13,20 +14,36 @@ class Mir:
         self.state_register = state_register
         self.release_register = release_register
         self.mission_name = mission_name
+        self.guid = rest.get_mission_guid(self.mission_name)
+
 
     def get_state(self):
         return rest.get_register_value(self.state_register)
 
     def come_to_workcell(self):
-        guid = rest.get_mission_guid(self.mission_name)
-        rest.add_to_mission_queue(guid)
+        mir.remove_old_missions()
+        rest.add_to_mission_queue(self.guid)
 
         while self.get_state() != STATE_AT_WORKCELL:
-            print("State is:", self.get_state())
+            print("MIR state is:", mir_states[self.get_state()])
             time.sleep(1)
 
     def release_from_workcell(self):
         rest.set_register_value(self.release_register, 1)
+
+    """Find all pending and executing missions
+        And then remove the ones which are posted by our group"""
+    def remove_old_missions(self):
+        mq = rest.get_mission_queue()
+        l = []
+        for d in mq:
+            state = d['state']
+            if state == 'Pending' or state == 'Executing':
+                l.append( d['id'] )
+        for id in l:
+            m = rest.get_mission_info_by_id(id)
+            if m['mission_id'] == rest.get_mission_guid(self.mission_name):
+                rest.remove_mission(id)
 
 
 if __name__ == "__main__":

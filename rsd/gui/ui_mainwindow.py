@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file 'ui_mainwindow.ui',
 # licensing of 'ui_mainwindow.ui' applies.
 #
-# Created: Wed Nov 27 16:57:14 2019
+# Created: Mon Dec  2 16:07:39 2019
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -304,6 +304,17 @@ class Ui_MainWindow(object):
         self.availabilityLabel.setObjectName("availabilityLabel")
         self.horizontalLayout_5.addWidget(self.availabilityLabel)
         self.verticalLayout_2.addLayout(self.horizontalLayout_5)
+        self.horizontalLayout_16 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_16.setContentsMargins(10, -1, 10, -1)
+        self.horizontalLayout_16.setObjectName("horizontalLayout_16")
+        self.label_12 = QtWidgets.QLabel(self.rightPanel)
+        self.label_12.setObjectName("label_12")
+        self.horizontalLayout_16.addWidget(self.label_12)
+        self.OEELabel = QtWidgets.QLabel(self.rightPanel)
+        self.OEELabel.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
+        self.OEELabel.setObjectName("OEELabel")
+        self.horizontalLayout_16.addWidget(self.OEELabel)
+        self.verticalLayout_2.addLayout(self.horizontalLayout_16)
         self.horizontalLayout_11 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_11.setContentsMargins(10, -1, 10, -1)
         self.horizontalLayout_11.setObjectName("horizontalLayout_11")
@@ -317,17 +328,20 @@ class Ui_MainWindow(object):
         self.label_5.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_5.setObjectName("label_5")
         self.horizontalLayout_11.addWidget(self.label_5)
-        self.label = QtWidgets.QLabel(self.rightPanel)
+        self.uptimeLabel = QtWidgets.QLabel(self.rightPanel)
         font = QtGui.QFont()
         font.setPointSize(-1)
         font.setWeight(50)
         font.setItalic(False)
         font.setBold(False)
-        self.label.setFont(font)
-        self.label.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
-        self.label.setObjectName("label")
-        self.horizontalLayout_11.addWidget(self.label)
+        self.uptimeLabel.setFont(font)
+        self.uptimeLabel.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
+        self.uptimeLabel.setObjectName("uptimeLabel")
+        self.horizontalLayout_11.addWidget(self.uptimeLabel)
         self.verticalLayout_2.addLayout(self.horizontalLayout_11)
+        self.horizontalLayout_13 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_13.setObjectName("horizontalLayout_13")
+        self.verticalLayout_2.addLayout(self.horizontalLayout_13)
         spacerItem3 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.verticalLayout_2.addItem(spacerItem3)
         self.horizontalLayout_12.addWidget(self.rightPanel)
@@ -577,9 +591,11 @@ class Ui_MainWindow(object):
         self.label_9.setText(QtWidgets.QApplication.translate("MainWindow", "Performance", None, -1))
         self.performanceLabel.setText(QtWidgets.QApplication.translate("MainWindow", "0.95", None, -1))
         self.label_8.setText(QtWidgets.QApplication.translate("MainWindow", "Availability", None, -1))
-        self.availabilityLabel.setText(QtWidgets.QApplication.translate("MainWindow", "0.3", None, -1))
+        self.availabilityLabel.setText(QtWidgets.QApplication.translate("MainWindow", "1.00", None, -1))
+        self.label_12.setText(QtWidgets.QApplication.translate("MainWindow", "OEE", None, -1))
+        self.OEELabel.setText(QtWidgets.QApplication.translate("MainWindow", "0.75", None, -1))
         self.label_5.setText(QtWidgets.QApplication.translate("MainWindow", "Uptime", None, -1))
-        self.label.setText(QtWidgets.QApplication.translate("MainWindow", "02:34:13", None, -1))
+        self.uptimeLabel.setText(QtWidgets.QApplication.translate("MainWindow", "00:00:00", None, -1))
         self.label_7.setText(QtWidgets.QApplication.translate("MainWindow", "System control", None, -1))
         self.label_4.setText(QtWidgets.QApplication.translate("MainWindow", "Status:", None, -1))
         self.statusLabel.setText(QtWidgets.QApplication.translate("MainWindow", "Picking from feeder", None, -1))
@@ -591,4 +607,3 @@ class Ui_MainWindow(object):
         self.abortButton.setText(QtWidgets.QApplication.translate("MainWindow", "Abort", None, -1))
         self.stopButton.setText(QtWidgets.QApplication.translate("MainWindow", "Stop", None, -1))
 
-import resources_rc

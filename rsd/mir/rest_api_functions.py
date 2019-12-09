@@ -4,7 +4,7 @@ import time
 from rsd import conf
 
 BASE_URL = conf.MIR_SERVER_URL + "/api/v2.0.0"
-
+#BASE_URL = "http://mir.com/api/v2.0.0"
 token = "Basic UlNEMjAxOTo0NWVkZWQ4YmRjMjJmZGQ5ZjcwOTJmY2RhMDhkOWFmMjdjNDNhNjQ4MWFkZDYyMDgwZWI3MmM0OTcyOTQ1NzZl"
 
 
@@ -26,7 +26,6 @@ def get_mission_guid(mission_name):
 
 """Returns an integer (id)"""
 
-
 def add_to_mission_queue(guid):
     url = BASE_URL + "/mission_queue"
 
@@ -47,7 +46,6 @@ def add_to_mission_queue(guid):
 """Input: the id, which was created when 
    the mission was posted to the queue"""
 
-
 def remove_mission(id):
     url = BASE_URL + "/mission_queue/" + str(id)
 
@@ -61,7 +59,7 @@ def remove_mission(id):
         print(r.content)
 
 
-def get_register_value(register_id):
+def get_register_value(register_id, debug=False):
     url = BASE_URL + "/registers"
     r = requests.get(url, headers={'Authorization': token})
 
@@ -70,7 +68,8 @@ def get_register_value(register_id):
         for elem in r_json:
             if elem['id'] == register_id:
                 value = elem['value']
-        print("Register " + str(register_id) + ": " + str(value))
+        if debug:
+            print("Register " + str(register_id) + ": " + str(value))
         return value
     else:
         print(r.status_code)
@@ -99,6 +98,66 @@ def get_status():
         return r_json
     else:
         print("Could not get status")
+
+
+def get_mission_queue():
+    url = BASE_URL + "/mission_queue"
+    r = requests.get(url, headers={'Authorization': token})
+    if r.status_code == 200:
+        print("get_mission_queue reponse: %s", r.json())
+        return r.json()
+    else:
+        print("Could not retrieve mission queue")
+        print(r.status_code)
+        print(r.content)
+
+def get_mission_info_by_id(id):
+    url = BASE_URL + "/mission_queue/" + str(id)
+    r = requests.get(url, headers={'Authorization': token})
+    if r.status_code == 200:
+        return r.json()
+    else:
+        print(r.status_code)
+        print(r.content)
+
+
+
+
+
+
+
+
+# guid = get_mission_guid("G9_mission")
+# id1 = add_to_mission_queue(guid)
+# mission_queue = get_mission_queue()
+
+# print(mission_queue[654])
+
+# mq = get_mission_queue()
+# l = []
+# for d in mq:
+#     state = d['state']
+#     if state == 'Pending' or state == 'Executing':
+#         print("Found a pending/executing mission")
+#         l.append( d['id'] )
+# print(l)
+# for id in l:
+#     m = get_mission_info_by_id(id)
+#     if m['mission_id'] == get_mission_guid("G9_mission"):
+#         print("gotcha")
+#         remove_mission(id)
+
+
+
+
+
+
+
+# id2 = add_to_mission_queue(guid)
+
+# print("id1: %2d \n id2: %2d \n" % (id1, id2) )
+
+
 
 # set_register_value(9,101)
 # get_register_value(9)
