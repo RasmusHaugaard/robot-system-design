@@ -3,7 +3,6 @@
 import sys
 import time
 import signal
-signal.signal(signal.SIGINT, signal.SIG_DFL) #https://stackoverflow.com/questions/5160577/ctrl-c-doesnt-work-with-pyqt
 
 from PySide2 import QtWidgets
 from PySide2.QtCore import QObject, Slot, Signal
@@ -14,9 +13,15 @@ from rsd.gui.ui_mainwindow import Ui_MainWindow
 from rsd.utils.rsd_redis import RsdRedis
 from rsd.packml.packml import STATES, PackMLActions as A
 
+signal.signal(signal.SIGINT, signal.SIG_DFL)  # https://stackoverflow.com/questions/5160577/ctrl-c-doesnt-work-with-pyqt
 
-state_images = (["tower_states/001.png", 1], ["tower_states/011.png", 0], ["tower_states/011.png", 0], ["tower_states/001.png", 0], ["tower_states/001.png", 1], ["tower_states/001.png", 1], ["tower_states/000.png", 1], ["tower_states/000.png", 1], ["tower_states/010.png", 0],
-                ["tower_states/001.png", 1], ["tower_states/010.png", 1], ["tower_states/010.png", 1], ["tower_states/100.png", 1], ["tower_states/100.png", 1], ["tower_states/100.png", 0], ["tower_states/100.png", 0], ["tower_states/100.png", 0])
+state_images = (
+    ["tower_states/001.png", 1], ["tower_states/011.png", 0], ["tower_states/011.png", 0], ["tower_states/001.png", 0],
+    ["tower_states/001.png", 1], ["tower_states/001.png", 1], ["tower_states/000.png", 1], ["tower_states/000.png", 1],
+    ["tower_states/010.png", 0], ["tower_states/001.png", 1], ["tower_states/010.png", 1], ["tower_states/010.png", 1],
+    ["tower_states/100.png", 1], ["tower_states/100.png", 1], ["tower_states/100.png", 0], ["tower_states/100.png", 0],
+    ["tower_states/100.png", 0]
+)
 
 
 class MainWindow(QtWidgets.QMainWindow, QObject):
@@ -73,16 +78,16 @@ class MainWindow(QtWidgets.QMainWindow, QObject):
     def on_timer_timeout(self):
 
         self.uptime = self.uptime + 1
-        if(self.uptime < 15):  # Change to if state == executing?
+        if (self.uptime < 15):  # Change to if state == executing?
             self.runtime = self.runtime + 1
 
         time_hrs = int(self.uptime / 3600)
         time_mins = int((self.uptime - time_hrs * 3600) / 60)
         time_secs = self.uptime - (time_hrs * 3600) - (time_mins * 60)
 
-        string_hrs = str(time_hrs) if time_hrs > 10 else "0"+str(time_hrs)
-        string_mins = str(time_mins) if time_mins > 10 else "0"+str(time_mins)
-        string_secs = str(time_secs) if time_secs > 10 else "0"+str(time_secs)
+        string_hrs = str(time_hrs) if time_hrs > 10 else "0" + str(time_hrs)
+        string_mins = str(time_mins) if time_mins > 10 else "0" + str(time_mins)
+        string_secs = str(time_secs) if time_secs > 10 else "0" + str(time_secs)
 
         uptime_string = string_hrs + ":" + string_mins + ":" + string_secs
         self.ui.uptimeLabel.setText(uptime_string)
@@ -139,4 +144,6 @@ if __name__ == "__main__":
     window = MainWindow()
     window.show()
     app.exec_()
-    window.r.unsubscribe()
+    #app.exit()
+    app.closeAllWindows()
+    #window.r.unsubscribe()

@@ -31,14 +31,20 @@ class Program:
         self.robot_process = None  # type: Popen
         self.r.subscribe("action", self.on_action_req)
         self.gui_process = Popen(["python3", "gui.py"], cwd="gui")
-        # TODO: start mes state logger
+        self.mes_state_logger = Popen(["python3", "mes_state_logger.py"])
         atexit.register(self.cleanup)
         self.gui_process.wait()
         self.cleanup()
         self.r.unsubscribe()
 
     def cleanup(self):
-        for p in self.gui_process, self.p_ur_comm, self.ligt_tower_process, self.robot_process:
+        for p in (
+                self.gui_process,
+                self.p_ur_comm,
+                self.ligt_tower_process,
+                self.robot_process,
+                self.mes_state_logger,
+        ):
             if p is not None:
                 try:
                     p.kill()
