@@ -33,7 +33,9 @@ class Program:
         self.gui_process = Popen(["python3", "gui.py"], cwd="gui")
         # TODO: start mes state logger
         atexit.register(self.cleanup)
-        self.r.join()
+        self.gui_process.wait()
+        self.cleanup()
+        self.r.unsubscribe()
 
     def cleanup(self):
         for p in self.gui_process, self.p_ur_comm, self.ligt_tower_process, self.robot_process:
