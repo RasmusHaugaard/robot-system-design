@@ -144,6 +144,4 @@ if __name__ == "__main__":
     window = MainWindow()
     window.show()
     app.exec_()
-    #app.exit()
-    app.closeAllWindows()
-    #window.r.unsubscribe()
+    window.r.unsubscribe()

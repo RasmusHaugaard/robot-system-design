@@ -25,60 +25,62 @@ assert clear_path
 robot.move(*clear_path)
 
 orders_ready = False
+NO_MIR = False
 
 while True:
 
-    mir.come_to_workcell()
+    if not NO_MIR:
+        mir.come_to_workcell()
 
-    if orders_ready:
+        if orders_ready:
 
-        # move done orders onto the MIR
-        for TRAY_GRASP, TRAY_GRASP_ABOVE, MIR_RELEASE in [
-            (q.TRAY_GRASP_A, q.TRAY_GRASP_A_ABOVE, q.MIR_RELEASE_A),
-            (q.TRAY_GRASP_B, q.TRAY_GRASP_B_ABOVE, q.MIR_RELEASE_B),
+            # move done orders onto the MIR
+            for TRAY_GRASP, TRAY_GRASP_ABOVE, MIR_RELEASE in [
+                (q.TRAY_GRASP_A, q.TRAY_GRASP_A_ABOVE, q.MIR_RELEASE_A),
+                (q.TRAY_GRASP_B, q.TRAY_GRASP_B_ABOVE, q.MIR_RELEASE_B),
+            ]:
+                robot.move(
+                    TRAY_GRASP_ABOVE,
+                    TRAY_GRASP,
+                ).grasp().move(
+                    TRAY_GRASP_ABOVE,
+                    q.MIR_WAYPOINT,
+                    q.MIR_RELEASE_WAYPOINT,
+                    MIR_RELEASE,
+                ).release().move(
+                    q.MIR_RELEASE_WAYPOINT,
+                    q.MIR_WAYPOINT,
+                )
+
+            orders_ready = False
+
+        # Move empty boxes from MIR to tray
+        # align mir boxes
+        robot.release().move(
+            q.MIR_WAYPOINT,
+            q.MIR_PUSH_START_ABOVE,
+            q.MIR_PUSH_START,
+            q.MIR_PUSH_END,
+            q.MIR_PUSH_END_ABOVE,
+        )
+        for MIR_GRASP, MIR_GRASP_ABOVE, TRAY_RELEASE, TRAY_RELEASE_ABOVE in [
+            (q.MIR_GRASP_A, q.MIR_GRASP_A_ABOVE, q.TRAY_RELEASE_A, q.TRAY_RELEASE_A_ABOVE),
+            (q.MIR_GRASP_B, q.MIR_GRASP_B_ABOVE, q.TRAY_RELEASE_B, q.TRAY_RELEASE_B_ABOVE),
         ]:
             robot.move(
-                TRAY_GRASP_ABOVE,
-                TRAY_GRASP,
+                MIR_GRASP_ABOVE,
+                MIR_GRASP,
             ).grasp().move(
-                TRAY_GRASP_ABOVE,
+                MIR_GRASP_ABOVE,
                 q.MIR_WAYPOINT,
-                q.MIR_RELEASE_WAYPOINT,
-                MIR_RELEASE,
+                TRAY_RELEASE_ABOVE,
+                TRAY_RELEASE,
             ).release().move(
-                q.MIR_RELEASE_WAYPOINT,
+                TRAY_RELEASE_ABOVE,
                 q.MIR_WAYPOINT,
             )
 
-        orders_ready = False
-
-    # Move empty boxes from MIR to tray
-    # align mir boxes
-    robot.release().move(
-        q.MIR_WAYPOINT,
-        q.MIR_PUSH_START_ABOVE,
-        q.MIR_PUSH_START,
-        q.MIR_PUSH_END,
-        q.MIR_PUSH_END_ABOVE,
-    )
-    for MIR_GRASP, MIR_GRASP_ABOVE, TRAY_RELEASE, TRAY_RELEASE_ABOVE in [
-        (q.MIR_GRASP_A, q.MIR_GRASP_A_ABOVE, q.TRAY_RELEASE_A, q.TRAY_RELEASE_A_ABOVE),
-        (q.MIR_GRASP_B, q.MIR_GRASP_B_ABOVE, q.TRAY_RELEASE_B, q.TRAY_RELEASE_B_ABOVE),
-    ]:
-        robot.move(
-            MIR_GRASP_ABOVE,
-            MIR_GRASP,
-        ).grasp().move(
-            MIR_GRASP_ABOVE,
-            q.MIR_WAYPOINT,
-            TRAY_RELEASE_ABOVE,
-            TRAY_RELEASE,
-        ).release().move(
-            TRAY_RELEASE_ABOVE,
-            q.MIR_WAYPOINT,
-        )
-
-    mir.release_from_workcell()
+        mir.release_from_workcell()
 
     # push-align empty order boxes
     robot.move(
