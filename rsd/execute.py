@@ -18,16 +18,11 @@ mir = Mir(9, 11, "G9_mission")
 
 # We don't know the position of the robot.
 # Find the closest q and move a clear path from there to IDLE.
-# q_s, dist = find_nearest(robot.get_q())
-# clear_path = find_path(q_s, q.IDLE)
-# assert clear_path
-# robot.move(*clear_path)
-
-# empty potential load
-robot.move(q.IDLE)
-robot.move(q.BRICK_DROP_DISCARD_BOX)
 robot.release()
-robot.move(q.IDLE)
+q_s, dist = find_nearest(robot.get_q())
+clear_path = find_path(q_s, q.IDLE)
+assert clear_path
+robot.move(*clear_path)
 
 orders_ready = False
 

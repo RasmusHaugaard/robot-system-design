@@ -1,6 +1,6 @@
 from pymodbus.client.sync import ModbusTcpClient as ModbusClient
+from rsd import conf
 
-# Replace with RPi address
-client = ModbusClient('192.168.1.3',5020)
-value=client.read_input_registers(0,1)
-print('Received value is: ',value.registers[0])
+client = ModbusClient(conf.PI_IP, conf.PI_MODBUS_PORT)
+value = client.read_input_registers(0, 1)
+print('Received value is: ', value.registers[0])

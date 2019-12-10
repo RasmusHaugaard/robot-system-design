@@ -11,8 +11,8 @@ from rsd.utils.function_queue import FunctionQueue
 
 r = RsdRedis()
 
-ur_io = RTDEIOInterface(conf.UR_IP)
 ur_rcv = RTDEReceiveInterface(conf.UR_IP)
+ur_io = RTDEIOInterface(conf.UR_IP)
 
 io_fq = FunctionQueue()
 rcv_fq = FunctionQueue()
@@ -28,4 +28,4 @@ r.service("setSpeedSlider", partial(io_fq, ur_io.setSpeedSlider))
 r.service("getActualQ", partial(rcv_fq, lambda x: ur_rcv.getActualQ()))
 # TODO: poll robot state and publish abort in case of emergency stop
 
-r.join()
+#r.join()
