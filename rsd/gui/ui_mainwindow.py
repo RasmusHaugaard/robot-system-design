@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file 'ui_mainwindow.ui',
 # licensing of 'ui_mainwindow.ui' applies.
 #
-# Created: Mon Dec  2 16:07:39 2019
+# Created: Mon Dec  9 15:31:56 2019
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -102,6 +102,15 @@ class Ui_MainWindow(object):
         self.middlePanel.addWidget(self.label_6)
         spacerItem = QtWidgets.QSpacerItem(20, 10, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
         self.middlePanel.addItem(spacerItem)
+        self.horizontalLayout_19 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_19.setObjectName("horizontalLayout_19")
+        self.label_16 = QtWidgets.QLabel(self.middlePanel_2)
+        self.label_16.setObjectName("label_16")
+        self.horizontalLayout_19.addWidget(self.label_16)
+        self.ordersPackedLabel = QtWidgets.QLabel(self.middlePanel_2)
+        self.ordersPackedLabel.setObjectName("ordersPackedLabel")
+        self.horizontalLayout_19.addWidget(self.ordersPackedLabel)
+        self.middlePanel.addLayout(self.horizontalLayout_19)
         self.horizontalLayout_4 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_4.setContentsMargins(10, -1, 10, -1)
         self.horizontalLayout_4.setObjectName("horizontalLayout_4")
@@ -315,6 +324,15 @@ class Ui_MainWindow(object):
         self.OEELabel.setObjectName("OEELabel")
         self.horizontalLayout_16.addWidget(self.OEELabel)
         self.verticalLayout_2.addLayout(self.horizontalLayout_16)
+        self.horizontalLayout_17 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_17.setObjectName("horizontalLayout_17")
+        self.label_15 = QtWidgets.QLabel(self.rightPanel)
+        self.label_15.setObjectName("label_15")
+        self.horizontalLayout_17.addWidget(self.label_15)
+        self.runtimeLabel = QtWidgets.QLabel(self.rightPanel)
+        self.runtimeLabel.setObjectName("runtimeLabel")
+        self.horizontalLayout_17.addWidget(self.runtimeLabel)
+        self.verticalLayout_2.addLayout(self.horizontalLayout_17)
         self.horizontalLayout_11 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_11.setContentsMargins(10, -1, 10, -1)
         self.horizontalLayout_11.setObjectName("horizontalLayout_11")
@@ -577,6 +595,8 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QtWidgets.QApplication.translate("MainWindow", "MainWindow", None, -1))
         self.label_6.setText(QtWidgets.QApplication.translate("MainWindow", " Order status", None, -1))
+        self.label_16.setText(QtWidgets.QApplication.translate("MainWindow", "Orders packed", None, -1))
+        self.ordersPackedLabel.setText(QtWidgets.QApplication.translate("MainWindow", "0", None, -1))
         self.label_2.setText(QtWidgets.QApplication.translate("MainWindow", "Current order ID", None, -1))
         self.orderIDLabel.setText(QtWidgets.QApplication.translate("MainWindow", "1337", None, -1))
         self.label_14.setText(QtWidgets.QApplication.translate("MainWindow", "# Red", None, -1))
@@ -594,6 +614,8 @@ class Ui_MainWindow(object):
         self.availabilityLabel.setText(QtWidgets.QApplication.translate("MainWindow", "1.00", None, -1))
         self.label_12.setText(QtWidgets.QApplication.translate("MainWindow", "OEE", None, -1))
         self.OEELabel.setText(QtWidgets.QApplication.translate("MainWindow", "0.75", None, -1))
+        self.label_15.setText(QtWidgets.QApplication.translate("MainWindow", "Runtime", None, -1))
+        self.runtimeLabel.setText(QtWidgets.QApplication.translate("MainWindow", "00:00:00", None, -1))
         self.label_5.setText(QtWidgets.QApplication.translate("MainWindow", "Uptime", None, -1))
         self.uptimeLabel.setText(QtWidgets.QApplication.translate("MainWindow", "00:00:00", None, -1))
         self.label_7.setText(QtWidgets.QApplication.translate("MainWindow", "System control", None, -1))
