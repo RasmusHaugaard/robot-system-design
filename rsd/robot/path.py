@@ -2,22 +2,24 @@ import queue
 from rsd.robot import q
 import numpy as np
 
+fully_connected_groups = (
+    (q.IDLE, *q.ABOVE_BRICKS, q.ABOVE_CAMERA),
+    (q.ABOVE_CAMERA, q.BRICK_DROP_DISCARD_BOX),
+    (q.IDLE, *q.BRICK_DROP_ORDER_BOX),
+    (q.IDLE, q.MIR_WAYPOINT),
+    (q.MIR_WAYPOINT, q.MIR_PUSH_START_ABOVE),
+)
+
 
 def get_all_q():
-    q_names = [a for a in dir(q) if not a.startswith("__")]
-    q_values = [getattr(q, a) for a in q_names]
-    q_values = [_q for _q in q_values if type(_q[0]) is float]
-    return q_values
+    all_q = set()
+    for group in fully_connected_groups:
+        for _q in group:
+            all_q.add(_q)
+    return list(all_q)
 
 
 all_q = get_all_q()
-
-fully_connected_groups = (
-    (q.GRASP_BLUE, q.ABOVE_BLUE), (q.GRASP_RED, q.ABOVE_RED), (q.GRASP_YELLOW, q.ABOVE_YELLOW),
-    (*q.ABOVE_BRICKS, q.IDLE, q.ABOVE_CAMERA),
-    (q.ABOVE_CAMERA, q.BRICK_DROP_DISCARD_BOX),
-    (q.BRICK_DROP_ORDER_BOX, q.IDLE),
-)
 
 
 def build_graph(groups):
@@ -88,14 +90,15 @@ def find_path(qs, qe):
 
 
 def main():
-    print_graph(g)
+    from rtde_receive import RTDEReceiveInterface
+    from rsd.conf import UR_IP
 
-    p = find_path(q.GRASP_RED, q.BRICK_DROP_DISCARD_BOX)
+    rtde_rcv = RTDEReceiveInterface(UR_IP)
+
+    start_q = rtde_rcv.getActualQ()
+    n_q, n_dist = find_nearest(start_q)
+    p = find_path(n_q, q.IDLE)
     print_path(p)
-
-    n_q, n_dist = find_nearest(np.array(q.ABOVE_RED) + 1e-6)
-    print("NEAREST:")
-    print(" ", name(n_q), n_dist)
 
 
 if __name__ == '__main__':

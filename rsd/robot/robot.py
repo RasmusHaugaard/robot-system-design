@@ -10,7 +10,8 @@ class Robot:
 
     def move(self, *q):
         for _q in q:
-            self.ur_ctrl.moveJ(_q)
+            while not self.ur_ctrl.moveJ(_q):
+                pass
         return self
 
     def grasp(self, do_grasp=True):

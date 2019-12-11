@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 from subprocess import Popen
+import atexit
 
 from rsd.utils.rsd_redis import RsdRedis
 from rsd.packml.packml import PackML, PackMLState as S, PackMLActions as A, ACTIONS
@@ -7,6 +8,8 @@ from rsd.packml.packml import PackML, PackMLState as S, PackMLActions as A, ACTI
 
 class Program:
     def __init__(self):
+        atexit.register(self.cleanup)
+
         self.r = RsdRedis()
         self.pml = PackML({
             S.RESETTING: self.resetting,
@@ -24,15 +27,31 @@ class Program:
 
             S.EXECUTE: lambda: False,  # don't finish this state
         }, cb_state_change=self.on_state_change)
-        self.on_state_change(None, self.pml.state)
         self.p_ur_comm = Popen(["python3", "ur_comm.py"])
         self.ligt_tower_process = Popen(["python3", "light_tower.py"])
         self.robot_process = None  # type: Popen
         self.r.subscribe("action", self.on_action_req)
         self.gui_process = Popen(["python3", "gui.py"], cwd="gui")
-        # TODO: start gui process
-        # TODO: start mes state logger
-        self.r.join()
+        self.mes_state_logger = Popen(["python3", "mes_state_logger.py"])
+
+        self.on_state_change(None, self.pml.state)
+        self.gui_process.wait()
+        self.cleanup()
+        self.r.unsubscribe()
+
+    def cleanup(self):
+        for p in (
+                self.gui_process,
+                self.p_ur_comm,
+                self.ligt_tower_process,
+                self.robot_process,
+                self.mes_state_logger,
+        ):
+            if p is not None:
+                try:
+                    p.kill()
+                finally:
+                    pass
 
     def on_action_req(self, a):
         s = self.pml.state

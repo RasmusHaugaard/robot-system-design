@@ -88,6 +88,9 @@ class RedisHelper:
         self.join(sub)
         return obj.get("val", None)
 
+    def __del__(self):
+        self.unsubscribe()
+
 
 def main():
     import time
