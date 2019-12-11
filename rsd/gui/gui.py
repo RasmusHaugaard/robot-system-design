@@ -63,25 +63,37 @@ class MainWindow(QtWidgets.QMainWindow, QObject):
 
     @Slot()
     def on_timer_timeout(self):
+
         self.uptime += .5
         if self.state == S.EXECUTE:
             self.runtime += .5
 
-        time_hrs = int(self.uptime / 3600)
-        time_mins = int(self.uptime % 3600 / 60)
-        time_secs = int(self.uptime % 60)
+        uptime_string = convert_from_seconds_to_timestamp(self.uptime)
+        runtime_string = convert_from_seconds_to_timestamp(self.runtime)
 
-        string_hrs = str(time_hrs) if time_hrs >= 10 else "0" + str(time_hrs)
-        string_mins = str(time_mins) if time_mins >= 10 else "0" + str(time_mins)
-        string_secs = str(time_secs) if time_secs >= 10 else "0" + str(time_secs)
-
-        uptime_string = string_hrs + ":" + string_mins + ":" + string_secs
         self.ui.uptimeLabel.setText(uptime_string)
+        self.ui.runtimeLabel.setText(runtime_string)
+
+        self.total_count = self.r.get("total_count")
 
         self.update_OEE()
+        self.update_order_status()
         self.update_light_tower()
         self.update_warnings()
 
+        
+    def update_order_status(self):
+        orders_packed = self.r.get("total_count")
+        order = self.r.get("current_order")
+        remaining_bricks = self.r.get("remaining_bricks")
+
+        self.ui.ordersPackedLabel.setText   (str(orders_packed))
+        self.ui.orderIDLabel.setText        (str(order["id"]))
+        self.ui.numBlueLabel.setText        (str(order["blue"] - remaining_bricks["blue"]) + "/" + str(order["blue"]))
+        self.ui.numRedLabel.setText         (str(order["red"] - remaining_bricks["red"]) + "/"  + str(order["red"]))
+        self.ui.numYellowLabel.setText      (str(order["yellow"] - remaining_bricks["yellow"]) + "/"  + str(order["yellow"]))
+
+        
     def update_light_tower(self):
         conf = light_tower.light_config[self.state]
         cond = (light_tower.FLASH, light_tower.SOLID) if self.light_tower_odd else (light_tower.SOLID,)
@@ -102,7 +114,7 @@ class MainWindow(QtWidgets.QMainWindow, QObject):
 
         # Performance:
         total_count = self.r.get("total_count") or 0
-        ideal_cycle_time = 120  # Average of packing 10 orders
+        ideal_cycle_time = 180 / 4  # 4 orders take 180 seconds approximately
         performance = ideal_cycle_time * total_count / max(self.runtime, 1e-6)
         self.ui.performanceLabel.setText("%0.2f" % performance)
 
@@ -123,6 +135,18 @@ class MainWindow(QtWidgets.QMainWindow, QObject):
             lines.append("{}: {}".format(key, val))
         text = "\n".join(lines)
         self.ui.warningLabel.setText(text)
+
+
+def convert_from_seconds_to_timestamp(seconds):
+        time_hrs = int(seconds / 3600)
+        time_mins = int((seconds - time_hrs * 3600) / 60)
+        time_secs = seconds - (time_hrs * 3600) - (time_mins * 60)
+
+        string_hrs = str(time_hrs) if time_hrs > 10 else "0"+str(time_hrs)
+        string_mins = str(time_mins) if time_mins > 10 else "0"+str(time_mins)
+        string_secs = str(time_secs) if time_secs > 10 else "0"+str(time_secs)
+
+        return string_hrs + ":" + string_mins + ":" + string_secs
 
 
 if __name__ == "__main__":
