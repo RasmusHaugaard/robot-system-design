@@ -26,6 +26,8 @@ r.service("setSpeedSlider", partial(io_fq, ur_io.setSpeedSlider))
 
 # recv
 r.service("getActualQ", partial(rcv_fq, lambda x: ur_rcv.getActualQ()))
+r.service("getSafetyMode", partial(rcv_fq, lambda x: ur_rcv.getSafetyMode()))
+r.service("getRobotModes", partial(rcv_fq, lambda x: ur_rcv.getRobotModes()))
 # TODO: poll robot state and publish abort in case of emergency stop
 
 #r.join()
