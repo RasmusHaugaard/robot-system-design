@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file 'ui_mainwindow.ui',
 # licensing of 'ui_mainwindow.ui' applies.
 #
-# Created: Wed Dec 11 12:04:14 2019
+# Created: Wed Dec 11 12:27:09 2019
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -39,6 +39,11 @@ class Ui_MainWindow(object):
 "}\n"
 "\n"
 "#rightPanel\n"
+"{\n"
+"border: 1px solid;\n"
+"}\n"
+"\n"
+"#bottomPanel\n"
 "{\n"
 "border: 1px solid;\n"
 "}")
@@ -84,7 +89,11 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.middlePanel_2.sizePolicy().hasHeightForWidth())
         self.middlePanel_2.setSizePolicy(sizePolicy)
         self.middlePanel_2.setMinimumSize(QtCore.QSize(200, 170))
-        self.middlePanel_2.setStyleSheet("")
+        self.middlePanel_2.setStyleSheet("#QHBoxLayout\n"
+"{\n"
+"layoutLeftMargin: 100;\n"
+"layoutRightMargin: 15\n"
+"}")
         self.middlePanel_2.setObjectName("middlePanel_2")
         self.middlePanel = QtWidgets.QVBoxLayout(self.middlePanel_2)
         self.middlePanel.setContentsMargins(0, 0, 0, 0)
@@ -104,6 +113,7 @@ class Ui_MainWindow(object):
         self.middlePanel.addItem(spacerItem)
         self.horizontalLayout_19 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_19.setSpacing(6)
+        self.horizontalLayout_19.setContentsMargins(10, -1, 10, -1)
         self.horizontalLayout_19.setObjectName("horizontalLayout_19")
         self.label_16 = QtWidgets.QLabel(self.middlePanel_2)
         self.label_16.setObjectName("label_16")
@@ -327,6 +337,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_16.addWidget(self.OEELabel)
         self.verticalLayout_2.addLayout(self.horizontalLayout_16)
         self.horizontalLayout_17 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_17.setContentsMargins(10, -1, 10, -1)
         self.horizontalLayout_17.setObjectName("horizontalLayout_17")
         self.label_15 = QtWidgets.QLabel(self.rightPanel)
         self.label_15.setObjectName("label_15")
@@ -368,7 +379,8 @@ class Ui_MainWindow(object):
         self.horizontalLayout_12.addWidget(self.rightPanel)
         self.verticalLayout_3.addLayout(self.horizontalLayout_12)
         self.bottomPanel = QtWidgets.QWidget(self.centralwidget)
-        self.bottomPanel.setStyleSheet("")
+        self.bottomPanel.setStyleSheet("border-width: 1px;\n"
+" border-color: rgb(0, 0, 0);")
         self.bottomPanel.setObjectName("bottomPanel")
         self.horizontalLayout = QtWidgets.QHBoxLayout(self.bottomPanel)
         self.horizontalLayout.setSpacing(6)
@@ -605,13 +617,13 @@ class Ui_MainWindow(object):
         self.numBlueLabel.setText(QtWidgets.QApplication.translate("MainWindow", "1/5", None, -1))
         self.label_3.setText(QtWidgets.QApplication.translate("MainWindow", " OEE statistics", None, -1))
         self.label_11.setText(QtWidgets.QApplication.translate("MainWindow", "Quality", None, -1))
-        self.qualityLabel.setText(QtWidgets.QApplication.translate("MainWindow", "0.65", None, -1))
+        self.qualityLabel.setText(QtWidgets.QApplication.translate("MainWindow", "1", None, -1))
         self.label_9.setText(QtWidgets.QApplication.translate("MainWindow", "Performance", None, -1))
         self.performanceLabel.setText(QtWidgets.QApplication.translate("MainWindow", "0.95", None, -1))
         self.label_8.setText(QtWidgets.QApplication.translate("MainWindow", "Availability", None, -1))
         self.availabilityLabel.setText(QtWidgets.QApplication.translate("MainWindow", "1.00", None, -1))
         self.label_12.setText(QtWidgets.QApplication.translate("MainWindow", "OEE", None, -1))
-        self.OEELabel.setText(QtWidgets.QApplication.translate("MainWindow", "0.75", None, -1))
+        self.OEELabel.setText(QtWidgets.QApplication.translate("MainWindow", "0.95", None, -1))
         self.label_15.setText(QtWidgets.QApplication.translate("MainWindow", "Runtime", None, -1))
         self.runtimeLabel.setText(QtWidgets.QApplication.translate("MainWindow", "00:00:00", None, -1))
         self.label_5.setText(QtWidgets.QApplication.translate("MainWindow", "Uptime", None, -1))
@@ -622,12 +634,6 @@ class Ui_MainWindow(object):
         self.label_13.setText(QtWidgets.QApplication.translate("MainWindow", "PackML state:", None, -1))
         self.packmlStateLabel.setText(QtWidgets.QApplication.translate("MainWindow", "Execute", None, -1))
         self.warningLabel.setText(QtWidgets.QApplication.translate("MainWindow", "Warnings\n"
-"\n"
-"\n"
-"\n"
-"\n"
-"\n"
-"\n"
 "", None, -1))
         self.startButton.setText(QtWidgets.QApplication.translate("MainWindow", "Start", None, -1))
         self.resetButton.setText(QtWidgets.QApplication.translate("MainWindow", "Reset", None, -1))
