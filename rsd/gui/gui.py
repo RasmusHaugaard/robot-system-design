@@ -39,8 +39,6 @@ class MainWindow(QtWidgets.QMainWindow, QObject):
         self.r.subscribe("state_changed", self.state_change.emit)
 
         # button callbacks
-        self.ui.abortButton.clicked.connect(
-            lambda: self.r.publish("action", A.ABORT))
         self.ui.stopButton.clicked.connect(
             lambda: self.r.publish("action", A.STOP))
         self.ui.pauseButton.clicked.connect(
