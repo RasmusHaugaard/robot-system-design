@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file 'ui_mainwindow.ui',
 # licensing of 'ui_mainwindow.ui' applies.
 #
-# Created: Mon Dec  9 15:31:56 2019
+# Created: Wed Dec 11 12:04:14 2019
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -13,7 +13,7 @@ from PySide2 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(809, 567)
+        MainWindow.resize(981, 692)
         MainWindow.setStyleSheet("QLabel\n"
 "{\n"
 "font:  20px;\n"
@@ -103,11 +103,13 @@ class Ui_MainWindow(object):
         spacerItem = QtWidgets.QSpacerItem(20, 10, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
         self.middlePanel.addItem(spacerItem)
         self.horizontalLayout_19 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_19.setSpacing(6)
         self.horizontalLayout_19.setObjectName("horizontalLayout_19")
         self.label_16 = QtWidgets.QLabel(self.middlePanel_2)
         self.label_16.setObjectName("label_16")
         self.horizontalLayout_19.addWidget(self.label_16)
         self.ordersPackedLabel = QtWidgets.QLabel(self.middlePanel_2)
+        self.ordersPackedLabel.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.ordersPackedLabel.setObjectName("ordersPackedLabel")
         self.horizontalLayout_19.addWidget(self.ordersPackedLabel)
         self.middlePanel.addLayout(self.horizontalLayout_19)
@@ -330,6 +332,7 @@ class Ui_MainWindow(object):
         self.label_15.setObjectName("label_15")
         self.horizontalLayout_17.addWidget(self.label_15)
         self.runtimeLabel = QtWidgets.QLabel(self.rightPanel)
+        self.runtimeLabel.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.runtimeLabel.setObjectName("runtimeLabel")
         self.horizontalLayout_17.addWidget(self.runtimeLabel)
         self.verticalLayout_2.addLayout(self.horizontalLayout_17)
@@ -364,7 +367,10 @@ class Ui_MainWindow(object):
         self.verticalLayout_2.addItem(spacerItem3)
         self.horizontalLayout_12.addWidget(self.rightPanel)
         self.verticalLayout_3.addLayout(self.horizontalLayout_12)
-        self.horizontalLayout = QtWidgets.QHBoxLayout()
+        self.bottomPanel = QtWidgets.QWidget(self.centralwidget)
+        self.bottomPanel.setStyleSheet("")
+        self.bottomPanel.setObjectName("bottomPanel")
+        self.horizontalLayout = QtWidgets.QHBoxLayout(self.bottomPanel)
         self.horizontalLayout.setSpacing(6)
         self.horizontalLayout.setContentsMargins(10, 10, 10, 10)
         self.horizontalLayout.setObjectName("horizontalLayout")
@@ -372,8 +378,9 @@ class Ui_MainWindow(object):
         self.horizontalLayout_14.setContentsMargins(-1, 0, -1, -1)
         self.horizontalLayout_14.setObjectName("horizontalLayout_14")
         self.verticalLayout_5 = QtWidgets.QVBoxLayout()
+        self.verticalLayout_5.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_5.setObjectName("verticalLayout_5")
-        self.label_7 = QtWidgets.QLabel(self.centralwidget)
+        self.label_7 = QtWidgets.QLabel(self.bottomPanel)
         font = QtGui.QFont()
         font.setPointSize(-1)
         font.setWeight(50)
@@ -387,9 +394,9 @@ class Ui_MainWindow(object):
         spacerItem4 = QtWidgets.QSpacerItem(20, 20, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.verticalLayout_5.addItem(spacerItem4)
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
-        self.horizontalLayout_2.setContentsMargins(100, -1, 0, -1)
+        self.horizontalLayout_2.setContentsMargins(0, -1, 0, -1)
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
-        self.label_4 = QtWidgets.QLabel(self.centralwidget)
+        self.label_4 = QtWidgets.QLabel(self.bottomPanel)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -410,7 +417,7 @@ class Ui_MainWindow(object):
         self.label_4.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_4.setObjectName("label_4")
         self.horizontalLayout_2.addWidget(self.label_4)
-        self.statusLabel = QtWidgets.QLabel(self.centralwidget)
+        self.statusLabel = QtWidgets.QLabel(self.bottomPanel)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -428,9 +435,9 @@ class Ui_MainWindow(object):
         self.horizontalLayout_2.addWidget(self.statusLabel)
         self.verticalLayout_5.addLayout(self.horizontalLayout_2)
         self.horizontalLayout_3 = QtWidgets.QHBoxLayout()
-        self.horizontalLayout_3.setContentsMargins(100, -1, -1, -1)
+        self.horizontalLayout_3.setContentsMargins(0, -1, -1, -1)
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
-        self.label_13 = QtWidgets.QLabel(self.centralwidget)
+        self.label_13 = QtWidgets.QLabel(self.bottomPanel)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -447,7 +454,7 @@ class Ui_MainWindow(object):
         self.label_13.setWordWrap(False)
         self.label_13.setObjectName("label_13")
         self.horizontalLayout_3.addWidget(self.label_13)
-        self.packmlStateLabel = QtWidgets.QLabel(self.centralwidget)
+        self.packmlStateLabel = QtWidgets.QLabel(self.bottomPanel)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -465,13 +472,20 @@ class Ui_MainWindow(object):
         self.packmlStateLabel.setObjectName("packmlStateLabel")
         self.horizontalLayout_3.addWidget(self.packmlStateLabel)
         self.verticalLayout_5.addLayout(self.horizontalLayout_3)
+        self.verticalLayout = QtWidgets.QVBoxLayout()
+        self.verticalLayout.setObjectName("verticalLayout")
+        self.warningLabel = QtWidgets.QLabel(self.bottomPanel)
+        self.warningLabel.setObjectName("warningLabel")
+        self.verticalLayout.addWidget(self.warningLabel)
+        self.verticalLayout_5.addLayout(self.verticalLayout)
+        self.horizontalLayout_18 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_18.setObjectName("horizontalLayout_18")
+        self.verticalLayout_5.addLayout(self.horizontalLayout_18)
         spacerItem5 = QtWidgets.QSpacerItem(20, 20, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.verticalLayout_5.addItem(spacerItem5)
         self.horizontalLayout_15 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_15.setObjectName("horizontalLayout_15")
-        spacerItem6 = QtWidgets.QSpacerItem(20, 20, QtWidgets.QSizePolicy.MinimumExpanding, QtWidgets.QSizePolicy.Minimum)
-        self.horizontalLayout_15.addItem(spacerItem6)
-        self.startButton = QtWidgets.QPushButton(self.centralwidget)
+        self.startButton = QtWidgets.QPushButton(self.bottomPanel)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -493,7 +507,7 @@ class Ui_MainWindow(object):
 "")
         self.startButton.setObjectName("startButton")
         self.horizontalLayout_15.addWidget(self.startButton)
-        self.resetButton = QtWidgets.QPushButton(self.centralwidget)
+        self.resetButton = QtWidgets.QPushButton(self.bottomPanel)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -508,7 +522,7 @@ class Ui_MainWindow(object):
         self.resetButton.setFont(font)
         self.resetButton.setObjectName("resetButton")
         self.horizontalLayout_15.addWidget(self.resetButton)
-        self.pauseButton = QtWidgets.QPushButton(self.centralwidget)
+        self.pauseButton = QtWidgets.QPushButton(self.bottomPanel)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -524,30 +538,7 @@ class Ui_MainWindow(object):
         self.pauseButton.setStyleSheet("backgrond: black")
         self.pauseButton.setObjectName("pauseButton")
         self.horizontalLayout_15.addWidget(self.pauseButton)
-        self.abortButton = QtWidgets.QPushButton(self.centralwidget)
-        self.abortButton.setEnabled(True)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.abortButton.sizePolicy().hasHeightForWidth())
-        self.abortButton.setSizePolicy(sizePolicy)
-        self.abortButton.setMinimumSize(QtCore.QSize(100, 100))
-        font = QtGui.QFont()
-        font.setPointSize(-1)
-        font.setWeight(50)
-        font.setItalic(False)
-        font.setBold(False)
-        self.abortButton.setFont(font)
-        self.abortButton.setStyleSheet("QPushButton\n"
-"{\n"
-"color: rgb(0,0, 0);\n"
-"background-color: #FF0000;\n"
-"}\n"
-"\n"
-"")
-        self.abortButton.setObjectName("abortButton")
-        self.horizontalLayout_15.addWidget(self.abortButton)
-        self.stopButton = QtWidgets.QPushButton(self.centralwidget)
+        self.stopButton = QtWidgets.QPushButton(self.bottomPanel)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -561,14 +552,21 @@ class Ui_MainWindow(object):
         font.setItalic(False)
         font.setBold(False)
         self.stopButton.setFont(font)
+        self.stopButton.setStyleSheet("QPushButton\n"
+"{\n"
+"color: rgb(0,0, 0);\n"
+"background-color: #FF0000;\n"
+"}\n"
+"\n"
+"")
         self.stopButton.setObjectName("stopButton")
         self.horizontalLayout_15.addWidget(self.stopButton)
-        spacerItem7 = QtWidgets.QSpacerItem(20, 20, QtWidgets.QSizePolicy.MinimumExpanding, QtWidgets.QSizePolicy.Minimum)
-        self.horizontalLayout_15.addItem(spacerItem7)
+        spacerItem6 = QtWidgets.QSpacerItem(20, 20, QtWidgets.QSizePolicy.MinimumExpanding, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout_15.addItem(spacerItem6)
         self.verticalLayout_5.addLayout(self.horizontalLayout_15)
         self.horizontalLayout_14.addLayout(self.verticalLayout_5)
         self.horizontalLayout.addLayout(self.horizontalLayout_14)
-        self.lightTowerStatus = QtWidgets.QLabel(self.centralwidget)
+        self.lightTowerStatus = QtWidgets.QLabel(self.bottomPanel)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(183)
         sizePolicy.setVerticalStretch(0)
@@ -583,7 +581,7 @@ class Ui_MainWindow(object):
         self.lightTowerStatus.setObjectName("lightTowerStatus")
         self.horizontalLayout.addWidget(self.lightTowerStatus)
         self.horizontalLayout.setStretch(0, 5)
-        self.verticalLayout_3.addLayout(self.horizontalLayout)
+        self.verticalLayout_3.addWidget(self.bottomPanel)
         MainWindow.setCentralWidget(self.centralwidget)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
@@ -622,10 +620,17 @@ class Ui_MainWindow(object):
         self.label_4.setText(QtWidgets.QApplication.translate("MainWindow", "Status:", None, -1))
         self.statusLabel.setText(QtWidgets.QApplication.translate("MainWindow", "Picking from feeder", None, -1))
         self.label_13.setText(QtWidgets.QApplication.translate("MainWindow", "PackML state:", None, -1))
-        self.packmlStateLabel.setText(QtWidgets.QApplication.translate("MainWindow", "Stopped", None, -1))
+        self.packmlStateLabel.setText(QtWidgets.QApplication.translate("MainWindow", "Execute", None, -1))
+        self.warningLabel.setText(QtWidgets.QApplication.translate("MainWindow", "Warnings\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"", None, -1))
         self.startButton.setText(QtWidgets.QApplication.translate("MainWindow", "Start", None, -1))
         self.resetButton.setText(QtWidgets.QApplication.translate("MainWindow", "Reset", None, -1))
-        self.pauseButton.setText(QtWidgets.QApplication.translate("MainWindow", "Hold", None, -1))
-        self.abortButton.setText(QtWidgets.QApplication.translate("MainWindow", "Abort", None, -1))
+        self.pauseButton.setText(QtWidgets.QApplication.translate("MainWindow", "Pause", None, -1))
         self.stopButton.setText(QtWidgets.QApplication.translate("MainWindow", "Stop", None, -1))
 
