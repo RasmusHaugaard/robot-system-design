@@ -54,6 +54,7 @@ class RedisHelper:
         if sub_i is not None:
             p = self.pubsub[sub_i]  # type: redis.client.PubSub
             p.unsubscribe()
+            p.close()
             del self.pubsub[sub_i]
         else:
             for i in list(self.pubsub.keys()):
