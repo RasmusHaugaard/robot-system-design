@@ -40,8 +40,6 @@ class MainWindow(QtWidgets.QMainWindow, QObject):
         self.r.subscribe("state_changed", self.state_change.emit)
 
         # button callbacks
-        self.ui.abortButton.clicked.connect(
-            lambda: self.r.publish("action", A.ABORT))
         self.ui.stopButton.clicked.connect(
             lambda: self.r.publish("action", A.STOP))
         self.ui.pauseButton.clicked.connect(
@@ -81,19 +79,17 @@ class MainWindow(QtWidgets.QMainWindow, QObject):
         self.update_light_tower()
         self.update_warnings()
 
-        
     def update_order_status(self):
         orders_packed = self.r.get("total_count")
-        order = self.r.get("current_order")
-        remaining_bricks = self.r.get("remaining_bricks")
+        order = self.r.get("current_order") or {"blue": 0, "red": 0, "yellow": 0, "id": "No order"}
+        remaining_bricks = self.r.get("remaining_bricks") or {"blue": 0, "red": 0, "yellow": 0}
 
-        self.ui.ordersPackedLabel.setText   (str(orders_packed))
-        self.ui.orderIDLabel.setText        (str(order["id"]))
-        self.ui.numBlueLabel.setText        (str(order["blue"] - remaining_bricks["blue"]) + "/" + str(order["blue"]))
-        self.ui.numRedLabel.setText         (str(order["red"] - remaining_bricks["red"]) + "/"  + str(order["red"]))
-        self.ui.numYellowLabel.setText      (str(order["yellow"] - remaining_bricks["yellow"]) + "/"  + str(order["yellow"]))
+        self.ui.ordersPackedLabel.setText(str(orders_packed))
+        self.ui.orderIDLabel.setText(str(order["id"]))
+        self.ui.numBlueLabel.setText(str(order["blue"] - remaining_bricks["blue"]) + "/" + str(order["blue"]))
+        self.ui.numRedLabel.setText(str(order["red"] - remaining_bricks["red"]) + "/" + str(order["red"]))
+        self.ui.numYellowLabel.setText(str(order["yellow"] - remaining_bricks["yellow"]) + "/" + str(order["yellow"]))
 
-        
     def update_light_tower(self):
         conf = light_tower.light_config[self.state]
         cond = (light_tower.FLASH, light_tower.SOLID) if self.light_tower_odd else (light_tower.SOLID,)
@@ -138,15 +134,15 @@ class MainWindow(QtWidgets.QMainWindow, QObject):
 
 
 def convert_from_seconds_to_timestamp(seconds):
-        time_hrs = int(seconds / 3600)
-        time_mins = int((seconds - time_hrs * 3600) / 60)
-        time_secs = seconds - (time_hrs * 3600) - (time_mins * 60)
+    time_hrs = int(seconds / 3600)
+    time_mins = int((seconds - time_hrs * 3600) / 60)
+    time_secs = seconds - (time_hrs * 3600) - (time_mins * 60)
 
-        string_hrs = str(time_hrs) if time_hrs > 10 else "0"+str(time_hrs)
-        string_mins = str(time_mins) if time_mins > 10 else "0"+str(time_mins)
-        string_secs = str(time_secs) if time_secs > 10 else "0"+str(time_secs)
+    string_hrs = str(time_hrs) if time_hrs > 10 else "0" + str(time_hrs)
+    string_mins = str(time_mins) if time_mins > 10 else "0" + str(time_mins)
+    string_secs = str(time_secs) if time_secs > 10 else "0" + str(time_secs)
 
-        return string_hrs + ":" + string_mins + ":" + string_secs
+    return string_hrs + ":" + string_mins + ":" + string_secs
 
 
 if __name__ == "__main__":
