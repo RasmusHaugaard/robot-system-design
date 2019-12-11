@@ -75,7 +75,7 @@ class RedisHelper:
 
         return self.subscribe("service:{}".format(name), _cb, sync, blocking)
 
-    def service_call(self, name, args):
+    def service_call(self, name, args=None):
         req_id = self.r.incr("req:id")
         obj = {}
 

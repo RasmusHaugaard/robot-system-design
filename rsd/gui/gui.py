@@ -13,6 +13,7 @@ from rsd.gui.ui_mainwindow import Ui_MainWindow
 from rsd.utils.rsd_redis import RsdRedis
 from rsd.packml.packml import PackMLState as S, STATES, PackMLActions as A
 from rsd import light_tower
+from rsd.utils.warnings import Warnings
 
 signal.signal(signal.SIGINT, signal.SIG_DFL)  # https://stackoverflow.com/questions/5160577/ctrl-c-doesnt-work-with-pyqt
 
@@ -79,6 +80,7 @@ class MainWindow(QtWidgets.QMainWindow, QObject):
 
         self.update_OEE()
         self.update_light_tower()
+        self.update_warnings()
 
     def update_light_tower(self):
         conf = light_tower.light_config[self.state]
@@ -112,6 +114,15 @@ class MainWindow(QtWidgets.QMainWindow, QObject):
         # OEE:
         OEE = availability * performance * quality
         self.ui.OEELabel.setText("%0.2f" % OEE)
+
+    def update_warnings(self):
+        w = Warnings(self.r)
+        warnings = w.get_all_warnings()
+        lines = ["Warnings:"] if warnings else []
+        for key, val in warnings.items():
+            lines.append("{}: {}".format(key, val))
+        text = "\n".join(lines)
+        self.ui.warningLabel.setText(text)
 
 
 if __name__ == "__main__":
