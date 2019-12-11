@@ -3,6 +3,7 @@
 import rsd.mir.rest_api_functions as rest
 import time
 
+STATE_AWAY = 0
 STATE_MOVING_TO_WORKCELL = 1
 STATE_AT_WORKCELL = 2
 STATE_MISSION_COMPLETE = 3
@@ -28,7 +29,6 @@ class Mir:
         rest.add_to_mission_queue(self.guid)
 
         while self.get_state() != STATE_AT_WORKCELL:
-            print("MIR state is:", mir_states[self.get_state()])
             time.sleep(1)
 
     def release_from_workcell(self):
@@ -42,12 +42,13 @@ class Mir:
         l = []
         for d in mq:
             state = d['state']
-            if state == 'Pending' or state == 'Executing':
+            if state in ('Pending', 'Executing'):
                 l.append(d['id'])
         for id in l:
             m = rest.get_mission_info_by_id(id)
             if m['mission_id'] == rest.get_mission_guid(self.mission_name):
                 rest.remove_mission(id)
+        rest.set_register_value(self.state_register, STATE_AWAY)
 
 
 def main():

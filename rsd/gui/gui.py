@@ -20,7 +20,7 @@ signal.signal(signal.SIGINT, signal.SIG_DFL)  # https://stackoverflow.com/questi
 
 class MainWindow(QtWidgets.QMainWindow, QObject):
     state_change = Signal(tuple)
-    state = S.ABORTED
+    state = None
     light_tower_odd = False
     uptime = 0.
     runtime = 0.
@@ -38,6 +38,7 @@ class MainWindow(QtWidgets.QMainWindow, QObject):
         # state subscriber
         self.state_change.connect(self.on_state_change)
         self.r.subscribe("state_changed", self.state_change.emit)
+        self.on_state_change((None, S.ABORTED))
 
         # button callbacks
         self.ui.stopButton.clicked.connect(
@@ -81,7 +82,7 @@ class MainWindow(QtWidgets.QMainWindow, QObject):
 
     def update_order_status(self):
         orders_packed = self.r.get("total_count")
-        order = self.r.get("current_order") or {"blue": 0, "red": 0, "yellow": 0, "id": "No order"}
+        order = self.r.get("current_order") or {"blue": 0, "red": 0, "yellow": 0, "id": "no order"}
         remaining_bricks = self.r.get("remaining_bricks") or {"blue": 0, "red": 0, "yellow": 0}
 
         self.ui.ordersPackedLabel.setText(str(orders_packed))
@@ -115,7 +116,7 @@ class MainWindow(QtWidgets.QMainWindow, QObject):
         self.ui.performanceLabel.setText("%0.2f" % performance)
 
         # Quality:
-        good_count = self.r.get("good count") or 0
+        good_count = total_count
         quality = good_count / (total_count or 1)
         self.ui.qualityLabel.setText("%0.2f" % quality)
 

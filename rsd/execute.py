@@ -15,6 +15,8 @@ robot = Robot(redis)
 mes = Mes(conf.MES_SERVER_URL)
 vis = VisionClient()
 mir = Mir(9, 11, "G9_mission")
+mir.remove_old_missions()
+redis.set("current_order", None)
 
 # We don't know the position of the robot.
 # Find the closest q and move a clear path from there to IDLE.
@@ -26,7 +28,6 @@ assert clear_path
 robot.move(*clear_path)
 
 orders_ready = False
-total_count = redis.get("total_count")
 
 NO_MIR = False
 
@@ -96,13 +97,13 @@ while True:
     for box_id in range(4):
         q_drop_order_box = q.BRICK_DROP_ORDER_BOX[box_id]
         order, ticket = mes.take_a_ready_order()
-        print(order)
 
         #Save the order in Redis, so it can be used to update GUI
-        redis.set("current_order", order)
         remaining_bricks = {} #To update GUI
         for key, val in order.items(): #Shallow copy of order
             remaining_bricks[key] = val
+        redis.set("current_order", order)
+        redis.set("remaining_bricks", remaining_bricks)
 
         # pack the order in the box
         for brick_color_id in range(len(conf.BRICK_COLORS)):
@@ -110,8 +111,6 @@ while True:
             q_grasp_brick, q_above_brick = q.GRASP_BRICKS[brick_color_id], q.ABOVE_BRICKS[brick_color_id]
 
             count = order[brick_color]
-            remaining_bricks[brick_color] = count
-            redis.set("remaining_bricks", remaining_bricks)
             failed = 0
             while count > 0:
                 robot.move(
@@ -133,9 +132,11 @@ while True:
                         redis.publish("action", A.HOLD)
                         failed = 0
                 robot.release()
+                remaining_bricks[brick_color] = count
+                redis.set("remaining_bricks", remaining_bricks)
 
         mes.complete_order(order, ticket)
-        redis.set("total count", redis.get("total count") + 1)
+        redis.set("total_count", (redis.get("total_count") or 0) + 1)
 
     orders_ready = True
 

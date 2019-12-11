@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 from subprocess import Popen
 import atexit
+import time
 
 from rsd.utils.rsd_redis import RsdRedis
 from rsd.packml.packml import PackML, PackMLState as S, PackMLActions as A, ACTIONS
@@ -28,12 +29,15 @@ class Program:
             S.EXECUTE: lambda: False,  # don't finish this state
         }, cb_state_change=self.on_state_change)
         self.p_ur_comm = Popen(["python3", "ur_comm.py"])
+        time.sleep(2)
         self.ligt_tower_process = Popen(["python3", "light_tower.py"])
         self.robot_process = None  # type: Popen
         self.r.subscribe("action", self.on_action_req)
         self.gui_process = Popen(["python3", "gui.py"], cwd="gui")
         self.mes_state_logger = Popen(["python3", "mes_state_logger.py"])
         self.ur_state_watcher = Popen(["python3", "ur_state_watcher.py"])
+        self.check_if_pi_is_connected = Popen(["python3", "utils/check_if_pi_is_connected.py"])
+        self.r.set("total_count", 0)
 
         self.on_state_change(None, self.pml.state)
         self.gui_process.wait()
@@ -48,6 +52,7 @@ class Program:
                 self.robot_process,
                 self.mes_state_logger,
                 self.ur_state_watcher,
+                self.check_if_pi_is_connected,
         ):
             if p is not None:
                 try:

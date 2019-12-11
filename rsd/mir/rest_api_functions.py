@@ -104,7 +104,7 @@ def get_mission_queue():
     url = BASE_URL + "/mission_queue"
     r = requests.get(url, headers={'Authorization': token})
     if r.status_code == 200:
-        print("get_mission_queue reponse: %s", r.json())
+        #print("get_mission_queue reponse: %s", r.json())
         return r.json()
     else:
         print("Could not retrieve mission queue")

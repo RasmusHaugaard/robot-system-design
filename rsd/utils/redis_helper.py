@@ -1,6 +1,7 @@
 import redis
 import pickle
 import threading
+import time
 
 
 class RedisHelper:
@@ -42,8 +43,8 @@ class RedisHelper:
                     threading.Thread(target=lambda: cb(data)).start()
 
         t = threading.Thread(target=sub)
-        t.start()
         self.threads[sub_i] = t
+        t.start()
 
         if blocking:
             self.join(sub_i)
@@ -54,6 +55,7 @@ class RedisHelper:
         if sub_i is not None:
             p = self.pubsub[sub_i]  # type: redis.client.PubSub
             p.unsubscribe()
+            self.join(sub_i)
             p.close()
             del self.pubsub[sub_i]
         else:
@@ -79,14 +81,17 @@ class RedisHelper:
     def service_call(self, name, args=None):
         req_id = self.r.incr("req:id")
         obj = {}
+        lock = threading.Lock()
+        lock.acquire()
 
         def store_unsub(val):
             obj["val"] = val
-            self.unsubscribe(sub)
+            lock.release()
 
-        sub = self.subscribe("res:{}".format(req_id), store_unsub, blocking=False)
+        sub = self.subscribe("res:{}".format(req_id), store_unsub)
         self.publish("service:{}".format(name), (req_id, args))
-        self.join(sub)
+        lock.acquire()
+        self.unsubscribe(sub)
         return obj.get("val", None)
 
     def __del__(self):
@@ -108,7 +113,7 @@ def main():
     val = r.service_call("mul2", 3)
     print(val)
 
-    time.sleep(.1)
+    time.sleep(2)
     r.unsubscribe()
 
     print("\ntest finished")
