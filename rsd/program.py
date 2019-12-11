@@ -33,6 +33,7 @@ class Program:
         self.r.subscribe("action", self.on_action_req)
         self.gui_process = Popen(["python3", "gui.py"], cwd="gui")
         self.mes_state_logger = Popen(["python3", "mes_state_logger.py"])
+        self.ur_state_watcher = Popen(["python3", "ur_state_watcher.py"])
 
         self.on_state_change(None, self.pml.state)
         self.gui_process.wait()
@@ -46,6 +47,7 @@ class Program:
                 self.ligt_tower_process,
                 self.robot_process,
                 self.mes_state_logger,
+                self.ur_state_watcher,
         ):
             if p is not None:
                 try:
