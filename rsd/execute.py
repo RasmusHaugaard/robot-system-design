@@ -9,12 +9,14 @@ from rsd.vision.vision_client import VisionClient
 from rsd.robot.path import find_nearest, find_path
 from rsd.packml.packml import PackMLActions as A
 from rsd.mir.mir import Mir
+from rsd.mir.mir import MIR_BATTERY_REGISTER, MIR_STATE_REGISTER, MIR_RELEASE_REGISTER
+
 
 redis = RsdRedis()
 robot = Robot(redis)
 mes = Mes(conf.MES_SERVER_URL)
 vis = VisionClient()
-mir = Mir(9, 11, "G9_mission")
+mir = Mir(MIR_BATTERY_REGISTER, MIR_STATE_REGISTER, MIR_RELEASE_REGISTER, "G9_mission", "G9G10G11G12Recharging")
 mir.remove_old_missions()
 redis.set("current_order", None)
 

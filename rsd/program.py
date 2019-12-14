@@ -36,6 +36,7 @@ class Program:
         self.gui_process = Popen(["python3", "gui.py"], cwd="gui")
         self.mes_state_logger = Popen(["python3", "mes_state_logger.py"])
         self.ur_state_watcher = Popen(["python3", "ur_state_watcher.py"])
+        self.mir_state_watcher = Popen(["python3", "mir_state_watcher.py"])
         self.check_if_pi_is_connected = Popen(["python3", "utils/check_if_pi_is_connected.py"])
         self.r.set("total_count", 0)
 
@@ -52,6 +53,7 @@ class Program:
                 self.robot_process,
                 self.mes_state_logger,
                 self.ur_state_watcher,
+                self.mir_state_watcher,
                 self.check_if_pi_is_connected,
         ):
             if p is not None:

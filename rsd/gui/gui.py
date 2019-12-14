@@ -50,7 +50,6 @@ class MainWindow(QtWidgets.QMainWindow, QObject):
         self.ui.resetButton.clicked.connect(
             lambda: self.r.publish("action", A.RESET))
 
-        # OEE - https://www.oee.com/calculating-oee.html
         self.timer = QtCore.QTimer(self)
         self.timer.timeout.connect(self.on_timer_timeout)
         self.timer.start(500)
@@ -79,6 +78,7 @@ class MainWindow(QtWidgets.QMainWindow, QObject):
         self.update_order_status()
         self.update_light_tower()
         self.update_warnings()
+        self.update_mir_state()
 
     def update_order_status(self):
         orders_packed = self.r.get("total_count")
@@ -123,6 +123,10 @@ class MainWindow(QtWidgets.QMainWindow, QObject):
         # OEE:
         OEE = availability * performance * quality
         self.ui.OEELabel.setText("%0.2f" % OEE)
+
+    def update_mir_state(self):
+        mir_state = self.r.get("mir_state")
+        self.ui.MIRstatusLabel.setText(mir_state)
 
     def update_warnings(self):
         w = Warnings(self.r)
