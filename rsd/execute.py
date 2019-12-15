@@ -14,6 +14,9 @@ from rsd.mir.mir import MIR_BATTERY_REGISTER, MIR_STATE_REGISTER, MIR_RELEASE_RE
 
 redis = RsdRedis()
 robot = Robot(redis)
+del robot
+robot = Robot(redis)
+
 mes = Mes(conf.MES_SERVER_URL)
 vis = VisionClient()
 mir = Mir(MIR_BATTERY_REGISTER, MIR_STATE_REGISTER, MIR_RELEASE_REGISTER, "G9_mission", "G9G10G11G12Recharging")
@@ -35,7 +38,9 @@ NO_MIR = False
 
 while True:
     if not NO_MIR:
+        redis.publish("action", A.SUSPEND)
         mir.come_to_workcell()
+        redis.publish("action", A.UNSUSPEND)
         if orders_ready:
 
             # move done orders onto the MIR
