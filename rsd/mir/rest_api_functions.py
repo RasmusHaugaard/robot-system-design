@@ -6,11 +6,12 @@ from rsd import conf
 BASE_URL = conf.MIR_SERVER_URL + "/api/v2.0.0"
 #BASE_URL = "http://mir.com/api/v2.0.0"
 token = "Basic UlNEMjAxOTo0NWVkZWQ4YmRjMjJmZGQ5ZjcwOTJmY2RhMDhkOWFmMjdjNDNhNjQ4MWFkZDYyMDgwZWI3MmM0OTcyOTQ1NzZl"
+retries = int(1e9)
 
 
 def get_mission_guid(mission_name):
     url = BASE_URL + '/missions'
-    r = requests.get(url, headers={'Authorization': token})  # stackoverflow: Python request how to pass auth header
+    r = requests.get(url, headers={'Authorization': token}, retries=retries)  # stackoverflow: Python request how to pass auth header
     if r.status_code == 200:
         r_json = r.json()
         for elem in r_json:
@@ -32,7 +33,7 @@ def add_to_mission_queue(guid):
     body = {"mission_id": guid}
 
     r = requests.post(url, headers={'Authorization': token, 'content-type': 'application/json'},
-                      data=json.dumps(body))
+                      data=json.dumps(body), retries=retries)
     if r.status_code == 201:  # 201 - The element has been created successfully
         r_json = r.json()
         print("Posted to mission queue:  " + "-- guid: " + guid + " -- id: " + str(r_json['id']))
@@ -49,7 +50,7 @@ def add_to_mission_queue(guid):
 def remove_mission(id):
     url = BASE_URL + "/mission_queue/" + str(id)
 
-    r = requests.delete(url, headers={'Authorization': token})
+    r = requests.delete(url, headers={'Authorization': token}, retries=retries)
 
     if r.status_code == 204:  # The element has been successfully deleted
         print("Succesfully removed: " + str(id) + "from mission queue")
@@ -61,7 +62,7 @@ def remove_mission(id):
 
 def get_register_value(register_id, debug=False):
     url = BASE_URL + "/registers"
-    r = requests.get(url, headers={'Authorization': token})
+    r = requests.get(url, headers={'Authorization': token}, retries=retries)
 
     if r.status_code == 200:
         r_json = r.json()
@@ -79,7 +80,8 @@ def get_register_value(register_id, debug=False):
 def set_register_value(register_id, value):
     url = BASE_URL + "/registers/" + str(register_id)
     body = {"value": value, "label": ""}
-    r = requests.put(url, headers={'Authorization': token, 'content-type': 'application/json'}, data=json.dumps(body))
+    r = requests.put(url, headers={'Authorization': token, 'content-type': 'application/json'},
+                     data=json.dumps(body), retries=retries)
 
     if r.status_code == 200:
         print("Set register " + str(register_id) + ": " + str(value))
@@ -90,7 +92,7 @@ def set_register_value(register_id, value):
 
 def get_status():
     url = BASE_URL + "/status"
-    r = requests.get(url, headers={'Authorization': token})
+    r = requests.get(url, headers={'Authorization': token}, retries=retries)
 
     if r.status_code == 200:
         r_json = r.json()
@@ -102,7 +104,7 @@ def get_status():
 
 def get_mission_queue():
     url = BASE_URL + "/mission_queue"
-    r = requests.get(url, headers={'Authorization': token})
+    r = requests.get(url, headers={'Authorization': token}, retries=retries)
     if r.status_code == 200:
         #print("get_mission_queue reponse: %s", r.json())
         return r.json()
@@ -113,7 +115,7 @@ def get_mission_queue():
 
 def get_mission_info_by_id(id):
     url = BASE_URL + "/mission_queue/" + str(id)
-    r = requests.get(url, headers={'Authorization': token})
+    r = requests.get(url, headers={'Authorization': token}, retries=retries)
     if r.status_code == 200:
         return r.json()
     else:
