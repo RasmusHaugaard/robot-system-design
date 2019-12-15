@@ -10,7 +10,7 @@ class Robot:
 
     def move(self, *q):
         for _q in q:
-            while not self.ur_ctrl.moveJ(_q):
+            while not self.ur_ctrl.moveJ((*_q,), 3.14, 3.14):
                 pass
         return self
 

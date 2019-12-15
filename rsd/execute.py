@@ -100,6 +100,7 @@ while True:
 
         mir.release_from_workcell()
 
+
     # push-align empty order boxes
     robot.move(
         q.ABOVE_PUSH_START_BOX_TRAY,
@@ -153,6 +154,7 @@ while True:
         mes.complete_order(order, ticket)
         redis.set("total_count", (redis.get("total_count") or 0) + 1)
 
+    mir.battery_check()
     orders_ready = True
 
     robot.move(q.IDLE)

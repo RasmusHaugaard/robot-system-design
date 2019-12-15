@@ -15,7 +15,7 @@ def get_mission_guid(mission_name):
         r_json = r.json()
         for elem in r_json:
             if (elem['name'] == mission_name):
-                print("Found mission: " + mission_name + " - guid: " + elem['guid'])
+                #print("Found mission: " + mission_name + " - guid: " + elem['guid'])
                 guid = elem['guid']
                 return guid
     else:

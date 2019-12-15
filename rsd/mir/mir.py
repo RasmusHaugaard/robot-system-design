@@ -70,17 +70,18 @@ class Mir:
     def is_already_charging(self):
         return rest.get_register_value(GLOBAL_CHARGING_REGISTER)
 
-    def come_to_workcell(self):
-        self.remove_old_missions()
-        if self.is_already_charging():
-            self.set_state(STATE_CHARGING)
-        elif self.should_go_to_charging_station():
+
+    def battery_check(self):
+        if self.should_go_to_charging_station():
             rest.set_register_value(GLOBAL_CHARGING_REGISTER, 1)
             self.go_to_charging_station()
-        else:
-            rest.add_to_mission_queue(self.g9_mission_guid)
-            while self.get_state() != STATE_AT_WORKCELL:
-                time.sleep(1)
+            
+
+    def come_to_workcell(self):
+        self.remove_old_missions()
+        rest.add_to_mission_queue(self.g9_mission_guid)
+        while self.get_state() != STATE_AT_WORKCELL:
+            time.sleep(1)
 
     def release_from_workcell(self):
         rest.set_register_value(self.release_register, 1)
